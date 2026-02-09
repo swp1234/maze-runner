@@ -1,0 +1,40 @@
+{
+  "title": "미로 러너 - 미로를 탈출하세요",
+  "header": {
+    "title": "미로 러너"
+  },
+  "stats": {
+    "stage": "스테이지",
+    "time": "시간",
+    "score": "점수",
+    "best": "최고 기록"
+  },
+  "control": {
+    "hint": "힌트",
+    "minimap": "미니맵",
+    "sound": "음성"
+  },
+  "items": {
+    "title": "아이템"
+  },
+  "controls": {
+    "move": "이동: WASD / 화살표 / 스와이프",
+    "hint": "H를 눌러 힌트 보기"
+  },
+  "modes": {
+    "normal": "일반 모드",
+    "fog": "안개 모드",
+    "timer": "시간 공격"
+  },
+  "modal": {
+    "welcome": "미로 러너에 오신 것을 환영합니다",
+    "description": "무작위로 생성된 미로를 탐색하고 아이템을 수집하세요!",
+    "start": "게임 시작",
+    "gameOver": "레벨 완료!",
+    "timeOver": "시간이 끝났습니다!",
+    "tryAgain": "더 좋은 성과를 기대합니다!",
+    "next": "다음 레벨",
+    "restart": "다시 시작",
+    "retry": "다시 시도"
+  }
+}

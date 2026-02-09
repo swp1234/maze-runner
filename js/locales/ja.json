@@ -1,0 +1,40 @@
+{
+  "title": "迷路ランナー - 迷路から脱出しよう",
+  "header": {
+    "title": "迷路ランナー"
+  },
+  "stats": {
+    "stage": "ステージ",
+    "time": "時間",
+    "score": "スコア",
+    "best": "ベストスコア"
+  },
+  "control": {
+    "hint": "ヒント",
+    "minimap": "ミニマップ",
+    "sound": "音声"
+  },
+  "items": {
+    "title": "アイテム"
+  },
+  "controls": {
+    "move": "移動: WASD / 矢印キー / スワイプ",
+    "hint": "Hを押してヒントを表示"
+  },
+  "modes": {
+    "normal": "ノーマルモード",
+    "fog": "霧のモード",
+    "timer": "タイムアタック"
+  },
+  "modal": {
+    "welcome": "迷路ランナーへようこそ",
+    "description": "ランダムに生成された迷路を探索し、アイテムを集めましょう！",
+    "start": "ゲーム開始",
+    "gameOver": "ステージクリア！",
+    "timeOver": "時間切れです！",
+    "tryAgain": "次はうまくいくといいですね！",
+    "next": "次のレベル",
+    "restart": "リスタート",
+    "retry": "もう一度試す"
+  }
+}

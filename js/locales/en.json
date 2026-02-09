@@ -1,0 +1,40 @@
+{
+  "title": "Maze Runner - Escape the Maze",
+  "header": {
+    "title": "Maze Runner"
+  },
+  "stats": {
+    "stage": "Stage",
+    "time": "Time",
+    "score": "Score",
+    "best": "Best Score"
+  },
+  "control": {
+    "hint": "Hint",
+    "minimap": "Minimap",
+    "sound": "Sound"
+  },
+  "items": {
+    "title": "Items"
+  },
+  "controls": {
+    "move": "Move: WASD / Arrows / Swipe",
+    "hint": "Press H for Hint"
+  },
+  "modes": {
+    "normal": "Normal Mode",
+    "fog": "Fog of War",
+    "timer": "Time Attack"
+  },
+  "modal": {
+    "welcome": "Welcome to Maze Runner",
+    "description": "Navigate through random mazes and collect items!",
+    "start": "Start Game",
+    "gameOver": "Level Complete!",
+    "timeOver": "Time's Up!",
+    "tryAgain": "Better luck next time!",
+    "next": "Next Level",
+    "restart": "Restart",
+    "retry": "Try Again"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "迷宫跑者 - 逃出迷宫",
+  "header": {
+    "title": "迷宫跑者"
+  },
+  "stats": {
+    "stage": "关卡",
+    "time": "时间",
+    "score": "分数",
+    "best": "最高分数"
+  },
+  "control": {
+    "hint": "提示",
+    "minimap": "小地图",
+    "sound": "声音"
+  },
+  "items": {
+    "title": "物品"
+  },
+  "controls": {
+    "move": "移动: WASD / 方向键 / 滑动",
+    "hint": "按H显示提示"
+  },
+  "modes": {
+    "normal": "普通模式",
+    "fog": "迷雾模式",
+    "timer": "时间挑战"
+  },
+  "modal": {
+    "welcome": "欢迎来到迷宫跑者",
+    "description": "在随机生成的迷宫中导航并收集物品！",
+    "start": "开始游戏",
+    "gameOver": "关卡完成！",
+    "timeOver": "时间到！",
+    "tryAgain": "下次加油！",
+    "next": "下一个关卡",
+    "restart": "重新开始",
+    "retry": "重试"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Maze Runner - Fliehen Sie aus dem Labyrinth",
+  "header": {
+    "title": "Maze Runner"
+  },
+  "stats": {
+    "stage": "Stufe",
+    "time": "Zeit",
+    "score": "Punkte",
+    "best": "Höchstpunktzahl"
+  },
+  "control": {
+    "hint": "Tipp",
+    "minimap": "Minikarte",
+    "sound": "Ton"
+  },
+  "items": {
+    "title": "Gegenstände"
+  },
+  "controls": {
+    "move": "Bewegen: WASD / Pfeiltasten / Wischen",
+    "hint": "Drücken Sie H für einen Tipp"
+  },
+  "modes": {
+    "normal": "Normaler Modus",
+    "fog": "Kriegsnebel",
+    "timer": "Zeitangriff"
+  },
+  "modal": {
+    "welcome": "Willkommen bei Maze Runner",
+    "description": "Navigieren Sie durch zufällige Labyrinthe und sammeln Sie Gegenstände!",
+    "start": "Spiel Starten",
+    "gameOver": "Stufe Abgeschlossen!",
+    "timeOver": "Zeit Abgelaufen!",
+    "tryAgain": "Viel Glück beim nächsten Mal!",
+    "next": "Nächste Stufe",
+    "restart": "Neu Starten",
+    "retry": "Erneut Versuchen"
+  }
+}

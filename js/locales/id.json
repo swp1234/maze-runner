@@ -1,0 +1,40 @@
+{
+  "title": "Maze Runner - Keluar dari Labirin",
+  "header": {
+    "title": "Maze Runner"
+  },
+  "stats": {
+    "stage": "Level",
+    "time": "Waktu",
+    "score": "Skor",
+    "best": "Skor Terbaik"
+  },
+  "control": {
+    "hint": "Petunjuk",
+    "minimap": "Peta Mini",
+    "sound": "Suara"
+  },
+  "items": {
+    "title": "Item"
+  },
+  "controls": {
+    "move": "Bergerak: WASD / Panah / Usap",
+    "hint": "Tekan H untuk Petunjuk"
+  },
+  "modes": {
+    "normal": "Mode Normal",
+    "fog": "Mode Kabut",
+    "timer": "Serangan Waktu"
+  },
+  "modal": {
+    "welcome": "Selamat Datang di Maze Runner",
+    "description": "Navigasi melalui labirin acak dan kumpulkan item!",
+    "start": "Mulai Permainan",
+    "gameOver": "Level Selesai!",
+    "timeOver": "Waktu Habis!",
+    "tryAgain": "Semoga berhasil lain kali!",
+    "next": "Level Berikutnya",
+    "restart": "Mulai Ulang",
+    "retry": "Coba Lagi"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Maze Runner - Échappez du Labyrinthe",
+  "header": {
+    "title": "Maze Runner"
+  },
+  "stats": {
+    "stage": "Niveau",
+    "time": "Temps",
+    "score": "Score",
+    "best": "Meilleur Score"
+  },
+  "control": {
+    "hint": "Indice",
+    "minimap": "Minimap",
+    "sound": "Son"
+  },
+  "items": {
+    "title": "Objets"
+  },
+  "controls": {
+    "move": "Déplacer: WASD / Flèches / Glisser",
+    "hint": "Appuyez sur H pour un Indice"
+  },
+  "modes": {
+    "normal": "Mode Normal",
+    "fog": "Brouillard de Guerre",
+    "timer": "Attaque Éclair"
+  },
+  "modal": {
+    "welcome": "Bienvenue dans Maze Runner",
+    "description": "Naviguez dans des labyrinthes aléatoires et collectez des objets!",
+    "start": "Commencer le Jeu",
+    "gameOver": "Niveau Complété!",
+    "timeOver": "Temps Écoulé!",
+    "tryAgain": "Bonne chance la prochaine fois!",
+    "next": "Niveau Suivant",
+    "restart": "Recommencer",
+    "retry": "Réessayer"
+  }
+}

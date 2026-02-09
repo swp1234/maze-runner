@@ -1,0 +1,40 @@
+{
+  "title": "Maze Runner - Labirentten Kaç",
+  "header": {
+    "title": "Maze Runner"
+  },
+  "stats": {
+    "stage": "Seviye",
+    "time": "Zaman",
+    "score": "Skor",
+    "best": "En Yüksek Skor"
+  },
+  "control": {
+    "hint": "İpucu",
+    "minimap": "Mini Harita",
+    "sound": "Ses"
+  },
+  "items": {
+    "title": "Öğeler"
+  },
+  "controls": {
+    "move": "Hareket: WASD / Oklar / Kaydır",
+    "hint": "İpucu için H Tuşuna Bas"
+  },
+  "modes": {
+    "normal": "Normal Mod",
+    "fog": "Savaş Sisi",
+    "timer": "Zaman Saldırısı"
+  },
+  "modal": {
+    "welcome": "Maze Runner'a Hoş Geldiniz",
+    "description": "Rastgele labirentler içinde gezinin ve öğeleri toplayın!",
+    "start": "Oyunu Başlat",
+    "gameOver": "Seviye Tamamlandı!",
+    "timeOver": "Zaman Doldu!",
+    "tryAgain": "Bir dahaki sefere daha şanslı olun!",
+    "next": "Sonraki Seviye",
+    "restart": "Yeniden Başlat",
+    "retry": "Tekrar Dene"
+  }
+}
