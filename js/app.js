@@ -5,55 +5,96 @@
 // MazeGenerator: Recursive backtracking + BFS pathfinding + open cell listing
 // ============================================================================
 class MazeGenerator {
-    constructor(width, height) {
+    constructor(width, height, loopPercent = 0.12) {
         this.width = width;
         this.height = height;
         this.maze = this.generateMaze();
+        this.breakWalls(loopPercent); // Create loops for multiple routes
     }
 
     generateMaze() {
         // Initialize maze grid (1 = wall, 0 = path)
         const maze = Array(this.height).fill(null).map(() => Array(this.width).fill(1));
 
-        // Recursive Backtracking algorithm
+        // Iterative backtracking (safe for large mazes, no stack overflow)
         const visited = Array(this.height).fill(null).map(() => Array(this.width).fill(false));
+        const stack = [];
 
-        const carve = (x, y) => {
-            visited[y][x] = true;
-            maze[y][x] = 0;
+        const startX = 1, startY = 1;
+        visited[startY][startX] = true;
+        maze[startY][startX] = 0;
+        stack.push([startX, startY]);
 
-            const directions = [
-                { x: 0, y: -2, dx: 0, dy: -1 }, // North
-                { x: 2, y: 0, dx: 1, dy: 0 },   // East
-                { x: 0, y: 2, dx: 0, dy: 1 },   // South
-                { x: -2, y: 0, dx: -1, dy: 0 }  // West
-            ];
+        const dirs = [
+            { x: 0, y: -2, dx: 0, dy: -1 },
+            { x: 2, y: 0, dx: 1, dy: 0 },
+            { x: 0, y: 2, dx: 0, dy: 1 },
+            { x: -2, y: 0, dx: -1, dy: 0 }
+        ];
 
-            // Shuffle directions (Fisher-Yates)
-            for (let i = directions.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [directions[i], directions[j]] = [directions[j], directions[i]];
-            }
+        while (stack.length > 0) {
+            const [cx, cy] = stack[stack.length - 1];
 
-            for (const dir of directions) {
-                const nx = x + dir.x;
-                const ny = y + dir.y;
-
+            // Find unvisited neighbors
+            const neighbors = [];
+            for (const dir of dirs) {
+                const nx = cx + dir.x;
+                const ny = cy + dir.y;
                 if (nx > 0 && nx < this.width - 1 && ny > 0 && ny < this.height - 1 && !visited[ny][nx]) {
-                    maze[y + dir.dy][x + dir.dx] = 0;
-                    carve(nx, ny);
+                    neighbors.push(dir);
                 }
             }
-        };
 
-        // Start from (1, 1) to ensure walls on edges
-        carve(1, 1);
+            if (neighbors.length === 0) {
+                stack.pop(); // Backtrack
+            } else {
+                // Pick random neighbor
+                const dir = neighbors[Math.floor(Math.random() * neighbors.length)];
+                const nx = cx + dir.x;
+                const ny = cy + dir.y;
+
+                // Carve passage
+                maze[cy + dir.dy][cx + dir.dx] = 0;
+                maze[ny][nx] = 0;
+                visited[ny][nx] = true;
+                stack.push([nx, ny]);
+            }
+        }
 
         // Ensure start and end are paths
         maze[1][1] = 0;
         maze[this.height - 2][this.width - 2] = 0;
 
         return maze;
+    }
+
+    // Break walls to create loops / multiple routes
+    breakWalls(percentage) {
+        const breakable = [];
+        for (let y = 1; y < this.height - 1; y++) {
+            for (let x = 1; x < this.width - 1; x++) {
+                if (this.maze[y][x] !== 1) continue;
+                // Horizontal wall: left and right are paths
+                if (x > 1 && x < this.width - 2 &&
+                    this.maze[y][x - 1] === 0 && this.maze[y][x + 1] === 0) {
+                    breakable.push({ x, y });
+                }
+                // Vertical wall: top and bottom are paths
+                else if (y > 1 && y < this.height - 2 &&
+                    this.maze[y - 1][x] === 0 && this.maze[y + 1][x] === 0) {
+                    breakable.push({ x, y });
+                }
+            }
+        }
+        // Shuffle
+        for (let i = breakable.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [breakable[i], breakable[j]] = [breakable[j], breakable[i]];
+        }
+        const count = Math.floor(breakable.length * percentage);
+        for (let i = 0; i < count; i++) {
+            this.maze[breakable[i].y][breakable[i].x] = 0;
+        }
     }
 
     isWall(x, y) {
@@ -230,7 +271,7 @@ class Game {
 
         // Player
         this.player = { x: 1.5, y: 1.5, trail: [] };
-        this.playerSpeed = 0.08; // cells per frame (applied per frame in update)
+        this.playerSpeed = 0.12; // cells per frame (faster for bigger mazes)
         this.playerRadius = 0.3;
         this.speedMultiplier = 1;
         this.speedBoostTimer = 0;
@@ -290,6 +331,10 @@ class Game {
 
         // DPR
         this.dpr = window.devicePixelRatio || 1;
+
+        // Camera follow
+        this.camera = { x: 0, y: 0 };
+        this.cellSize = 36; // pixels per cell (fixed, not fit-to-screen)
 
         // Render state (stored for particle coordinate conversion)
         this.renderOffsetX = 0;
@@ -587,25 +632,28 @@ class Game {
     }
 
     initLevel() {
-        // Calculate maze size: 7, 9, 11, ... capped at 21. Must be odd.
-        let mazeSize = 7 + Math.floor((this.stage - 1) * 2);
-        mazeSize = Math.min(mazeSize, 21);
+        // Maze sizes: stage 1=21, 2=25, 3=29, 4=33, ... capped at 51. Must be odd.
+        let mazeSize = 21 + (this.stage - 1) * 4;
+        mazeSize = Math.min(mazeSize, 51);
         if (mazeSize % 2 === 0) mazeSize += 1;
 
+        // More loops at higher stages for complexity
+        const loopPct = Math.min(0.08 + this.stage * 0.015, 0.20);
+
         // Create new maze
-        this.maze = new MazeGenerator(mazeSize, mazeSize);
+        this.maze = new MazeGenerator(mazeSize, mazeSize, loopPct);
 
         // Reset player
         this.player.x = 1.5;
         this.player.y = 1.5;
         this.player.trail = [];
 
-        // Time: scales with maze AREA but pressure increases at higher stages
-        // Stage 1 (7x7=49 cells): ~50s, Stage 4 (13x13=169): ~65s, Stage 8 (21x21=441): ~80s
-        // Formula: sqrt(area) * factor, factor decreases with stage
+        // Time: scales with maze area but pressure increases
+        // Stage 1 (21x21): ~120s, Stage 4 (33x33): ~130s, Stage 8 (51x51): ~140s
+        // Generous enough to explore but tight enough to pressure
         const area = mazeSize * mazeSize;
-        const timeFactor = Math.max(0.55, 1.0 - this.stage * 0.05); // 1.0 → 0.55
-        this.maxTime = Math.floor(Math.sqrt(area) * 8 * timeFactor) * 1000;
+        const timeFactor = Math.max(0.45, 0.85 - this.stage * 0.04);
+        this.maxTime = Math.floor(Math.sqrt(area) * 6.5 * timeFactor) * 1000;
         this.timeLeft = this.maxTime;
         this.timeUsed = 0;
 
@@ -632,8 +680,8 @@ class Game {
         const minimapContainer = document.querySelector('.minimap-container');
         if (minimapContainer) minimapContainer.classList.remove('visible');
 
-        // Fog: radius shrinks at higher stages (3.0 → 1.8 minimum)
-        this.fogRadius = Math.max(1.8, 3.0 - (this.stage - 1) * 0.15);
+        // Fog: radius shrinks at higher stages (5.0 → 3.0 minimum for bigger mazes)
+        this.fogRadius = Math.max(3.0, 5.0 - (this.stage - 1) * 0.25);
         this.baseFogRadius = this.fogRadius;
         this.exploredCells = new Set();
 
@@ -651,6 +699,10 @@ class Game {
         this.keysCollected = 0;
         this.bonusCollected = 0;
         this.generateItems();
+
+        // Init camera to player position
+        this.camera.x = this.player.x * this.cellSize - window.innerWidth / 2;
+        this.camera.y = this.player.y * this.cellSize - window.innerHeight / 2;
 
         // Resize canvas
         this.resizeCanvas();
@@ -693,8 +745,8 @@ class Game {
             return fallback;
         };
 
-        // Keys: 2-3 per level
-        const keyCount = 2 + (this.stage >= 3 ? 1 : 0);
+        // Keys: 3-6 per level (scales with maze size)
+        const keyCount = Math.min(3 + Math.floor(this.stage / 2), 6);
         this.totalKeys = keyCount;
         for (let i = 0; i < keyCount; i++) {
             const cell = pickCell();
@@ -706,8 +758,8 @@ class Game {
             });
         }
 
-        // Bonus stars: 2-4 per level
-        const bonusCount = 2 + Math.min(Math.floor(this.stage / 2), 2);
+        // Bonus stars: 3-6 per level
+        const bonusCount = Math.min(3 + Math.floor(this.stage / 2), 6);
         this.totalBonus = bonusCount;
         for (let i = 0; i < bonusCount; i++) {
             const cell = pickCell();
@@ -741,9 +793,9 @@ class Game {
             });
         }
 
-        // Trap tiles: stage 3+, warps player back to start
-        if (this.stage >= 3) {
-            const trapCount = Math.min(1 + Math.floor((this.stage - 3) / 2), 5);
+        // Trap tiles: stage 2+, warps player back to start
+        if (this.stage >= 2) {
+            const trapCount = Math.min(2 + Math.floor((this.stage - 2)), 8);
             for (let i = 0; i < trapCount; i++) {
                 const cell = pickCell();
                 this.traps.push({
@@ -1096,24 +1148,41 @@ class Game {
 
         const mazeW = this.maze.width;
         const mazeH = this.maze.height;
+        const scale = this.cellSize;
 
-        // Calculate scale to fit maze in viewport with padding for HUD
-        const padding = 60;
-        const scale = Math.min((w - 20) / mazeW, (h - padding - 20) / mazeH);
-        const offsetX = (w - mazeW * scale) / 2;
-        const offsetY = (h - mazeH * scale) / 2 + 10;
+        // Camera follow player (smooth lerp)
+        const targetCamX = this.player.x * scale - w / 2;
+        const targetCamY = this.player.y * scale - h / 2;
+
+        // Clamp to maze bounds
+        const maxCamX = Math.max(0, mazeW * scale - w);
+        const maxCamY = Math.max(0, mazeH * scale - h);
+        const clampedX = Math.max(0, Math.min(targetCamX, maxCamX));
+        const clampedY = Math.max(0, Math.min(targetCamY, maxCamY));
+
+        // Smooth lerp (fast follow)
+        this.camera.x += (clampedX - this.camera.x) * 0.15;
+        this.camera.y += (clampedY - this.camera.y) * 0.15;
+
+        // If maze fits on screen, center it instead
+        const offsetX = (mazeW * scale <= w) ? (w - mazeW * scale) / 2 : -this.camera.x;
+        const offsetY = (mazeH * scale <= h) ? (h - mazeH * scale) / 2 : -this.camera.y;
 
         // Store for particle coordinate conversion
         this.renderOffsetX = offsetX;
         this.renderOffsetY = offsetY;
         this.renderScale = scale;
 
+        // Visible cell range (frustum culling)
+        this.visStartCol = Math.max(0, Math.floor(-offsetX / scale) - 1);
+        this.visEndCol = Math.min(mazeW, Math.ceil((-offsetX + w) / scale) + 1);
+        this.visStartRow = Math.max(0, Math.floor(-offsetY / scale) - 1);
+        this.visEndRow = Math.min(mazeH, Math.ceil((-offsetY + h) / scale) + 1);
+
         ctx.save();
 
         if (this.gameMode === 'fog') {
             // FOG MODE: Draw scene, then apply radial mask
-
-            // First draw the full scene
             this.drawMaze(ctx, offsetX, offsetY, scale);
             this.drawTraps(ctx, offsetX, offsetY, scale);
             this.drawItems(ctx, offsetX, offsetY, scale);
@@ -1164,57 +1233,54 @@ class Game {
         const mazeW = this.maze.width;
         const mazeH = this.maze.height;
 
-        for (let y = 0; y < mazeH; y++) {
-            for (let x = 0; x < mazeW; x++) {
+        // Only draw visible cells (frustum culling)
+        const r0 = this.visStartRow, r1 = this.visEndRow;
+        const c0 = this.visStartCol, c1 = this.visEndCol;
+
+        for (let y = r0; y < r1; y++) {
+            for (let x = c0; x < c1; x++) {
                 const px = ox + x * scale;
                 const py = oy + y * scale;
 
                 if (this.maze.isWall(x, y)) {
-                    // Wall
                     ctx.fillStyle = '#12122a';
-                    ctx.fillRect(px, py, scale + 0.5, scale + 0.5); // +0.5 to avoid gaps
+                    ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
                 } else {
-                    // Path
                     ctx.fillStyle = '#0a0a1a';
                     ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
                 }
             }
         }
 
-        // Draw neon edges where wall meets path
+        // Draw neon edges where wall meets path (visible area only)
         ctx.strokeStyle = 'rgba(26, 188, 156, 0.12)';
         ctx.lineWidth = 1;
 
-        for (let y = 0; y < mazeH; y++) {
-            for (let x = 0; x < mazeW; x++) {
+        for (let y = r0; y < r1; y++) {
+            for (let x = c0; x < c1; x++) {
                 if (!this.maze.isWall(x, y)) continue;
 
                 const px = ox + x * scale;
                 const py = oy + y * scale;
 
-                // Check each neighbor: if it's a path, draw line on shared edge
-                // Top neighbor is path
                 if (y > 0 && !this.maze.isWall(x, y - 1)) {
                     ctx.beginPath();
                     ctx.moveTo(px, py);
                     ctx.lineTo(px + scale, py);
                     ctx.stroke();
                 }
-                // Bottom neighbor is path
                 if (y < mazeH - 1 && !this.maze.isWall(x, y + 1)) {
                     ctx.beginPath();
                     ctx.moveTo(px, py + scale);
                     ctx.lineTo(px + scale, py + scale);
                     ctx.stroke();
                 }
-                // Left neighbor is path
                 if (x > 0 && !this.maze.isWall(x - 1, y)) {
                     ctx.beginPath();
                     ctx.moveTo(px, py);
                     ctx.lineTo(px, py + scale);
                     ctx.stroke();
                 }
-                // Right neighbor is path
                 if (x < mazeW - 1 && !this.maze.isWall(x + 1, y)) {
                     ctx.beginPath();
                     ctx.moveTo(px + scale, py);
