@@ -1,40 +1,66 @@
 {
   "title": "Maze Runner - Escape the Maze",
-  "header": {
-    "title": "Maze Runner"
+  "app": {
+    "loading": "Loading..."
   },
-  "stats": {
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Navigate through mazes and collect items!",
+    "bestStage": "Best Stage",
+    "bestScore": "Best Score",
+    "start": "Start Game",
+    "homeLink": "More Games"
+  },
+  "modes": {
+    "normal": "Normal",
+    "normalDesc": "Classic maze with no time limit",
+    "fog": "Fog of War",
+    "fogDesc": "Only see around your player",
+    "timer": "Time Attack",
+    "timerDesc": "Race against the clock"
+  },
+  "game": {
     "stage": "Stage",
     "time": "Time",
     "score": "Score",
-    "best": "Best Score"
-  },
-  "control": {
+    "keys": "Keys",
+    "bonus": "Bonus",
+    "combo": "Combo",
     "hint": "Hint",
-    "minimap": "Minimap",
-    "sound": "Sound"
+    "minimap": "Map"
   },
   "items": {
-    "title": "Items"
+    "key": "Key",
+    "bonus": "Bonus Star",
+    "speedBoost": "Speed Boost",
+    "timeFreezer": "Time Freeze"
   },
-  "controls": {
-    "move": "Move: WASD / Arrows / Swipe",
-    "hint": "Press H for Hint"
+  "result": {
+    "title": "Level Complete!",
+    "timeBonus": "Time Bonus",
+    "keysCollected": "Keys",
+    "bonusCollected": "Bonus Stars",
+    "comboBonus": "Combo Bonus",
+    "total": "Total",
+    "nextLevel": "Next Level",
+    "menu": "Menu",
+    "newBest": "New Best!"
   },
-  "modes": {
-    "normal": "Normal Mode",
-    "fog": "Fog of War",
-    "timer": "Time Attack"
+  "gameover": {
+    "title": "Game Over",
+    "finalStage": "Stage Reached",
+    "finalScore": "Final Score",
+    "retry": "Try Again",
+    "menu": "Menu"
   },
-  "modal": {
-    "welcome": "Welcome to Maze Runner",
-    "description": "Navigate through random mazes and collect items!",
-    "start": "Start Game",
-    "gameOver": "Level Complete!",
-    "timeOver": "Time's Up!",
-    "tryAgain": "Better luck next time!",
-    "next": "Next Level",
-    "restart": "Restart",
-    "retry": "Try Again"
+  "toast": {
+    "comboX": "Combo x{{n}}!",
+    "newBest": "New Record!",
+    "perfectClear": "Perfect Clear!",
+    "speedBoost": "Speed Boost!",
+    "timeFrozen": "Time Frozen!"
+  },
+  "control": {
+    "sound": "Sound"
   }
 }

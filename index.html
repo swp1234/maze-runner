@@ -2,20 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">Maze Runner - Escape the Maze</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="title">Maze Runner - Escape the Maze | DopaBrain</title>
 
-    <!-- SEO & Meta Tags -->
-    <meta name="description" content="Maze Runner - Solve random mazes, unlock achievements, and compete globally!">
-    <meta name="keywords" content="maze game, puzzle, escape, fun game">
-    <meta name="theme-color" content="#0f0f23">
+    <!-- SEO Meta -->
+    <meta name="description" content="Navigate procedurally generated mazes, collect keys and bonuses, and conquer increasingly challenging stages. Play Maze Runner free online with 3 game modes!">
+    <meta name="theme-color" content="#0a0a1a">
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://dopabrain.com/maze-runner/">
+    <link rel="alternate" hreflang="x-default" href="https://dopabrain.com/maze-runner/">
+    <link rel="alternate" hreflang="ko" href="https://dopabrain.com/maze-runner/?lang=ko">
+    <link rel="alternate" hreflang="en" href="https://dopabrain.com/maze-runner/?lang=en">
+    <link rel="alternate" hreflang="zh" href="https://dopabrain.com/maze-runner/?lang=zh">
+    <link rel="alternate" hreflang="hi" href="https://dopabrain.com/maze-runner/?lang=hi">
+    <link rel="alternate" hreflang="ru" href="https://dopabrain.com/maze-runner/?lang=ru">
+    <link rel="alternate" hreflang="ja" href="https://dopabrain.com/maze-runner/?lang=ja">
+    <link rel="alternate" hreflang="es" href="https://dopabrain.com/maze-runner/?lang=es">
+    <link rel="alternate" hreflang="pt" href="https://dopabrain.com/maze-runner/?lang=pt">
+    <link rel="alternate" hreflang="id" href="https://dopabrain.com/maze-runner/?lang=id">
+    <link rel="alternate" hreflang="tr" href="https://dopabrain.com/maze-runner/?lang=tr">
+    <link rel="alternate" hreflang="de" href="https://dopabrain.com/maze-runner/?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://dopabrain.com/maze-runner/?lang=fr">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Maze Runner - Escape the Maze">
-    <meta property="og:description" content="Solve random mazes and compete globally!">
-    <meta property="og:image" content="./icon-512.svg">
+    <meta property="og:title" content="Maze Runner - Escape the Maze | DopaBrain">
+    <meta property="og:description" content="Navigate procedurally generated mazes, collect keys and bonuses, and conquer increasingly challenging stages. 3 game modes available!">
+    <meta property="og:image" content="https://dopabrain.com/maze-runner/icon-512.svg">
     <meta property="og:url" content="https://dopabrain.com/maze-runner/">
-    <meta property="og:type" content="game">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Maze Runner - Escape the Maze | DopaBrain">
+    <meta name="twitter:description" content="Navigate procedurally generated mazes, collect keys and bonuses, and conquer increasingly challenging stages.">
+    <meta name="twitter:image" content="https://dopabrain.com/maze-runner/icon-512.svg">
 
     <!-- Schema.org VideoGame -->
     <script type="application/ld+json">
@@ -23,18 +44,222 @@
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Maze Runner",
-        "description": "Solve random mazes with multiple difficulty levels and game modes",
+        "description": "Navigate procedurally generated mazes, collect keys and bonuses, and conquer increasingly challenging stages with 3 unique game modes.",
         "url": "https://dopabrain.com/maze-runner/",
-        "image": "./icon-512.svg",
+        "image": "https://dopabrain.com/maze-runner/icon-512.svg",
         "author": {
             "@type": "Organization",
-            "name": "DopaBrain"
+            "name": "DopaBrain",
+            "url": "https://dopabrain.com"
         },
-        "genre": "Puzzle",
-        "gameLocation": "Web Browser",
-        "applicationCategory": "Game"
+        "genre": ["Puzzle", "Maze"],
+        "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "inLanguage": ["en", "ko", "ja", "zh", "es", "pt", "id", "tr", "de", "fr", "hi", "ru"]
     }
     </script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
+    <link rel="apple-touch-icon" href="./icon-192.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- App Loader -->
+    <div class="app-loader" id="app-loader">
+        <div class="loader-spinner"></div>
+        <p data-i18n="app.loading">Loading...</p>
+    </div>
+
+    <!-- Sound Toggle -->
+    <button class="sound-toggle" id="sound-toggle" data-i18n-title="control.sound" title="Sound">🔊</button>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button class="lang-toggle" id="lang-toggle" title="Language">🌐</button>
+        <div class="lang-menu hidden" id="lang-menu">
+            <button class="lang-option" data-lang="ko">🇰🇷 한국어</button>
+            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+            <button class="lang-option" data-lang="ja">🇯🇵 日本語</button>
+            <button class="lang-option" data-lang="zh">🇨🇳 中文</button>
+            <button class="lang-option" data-lang="es">🇪🇸 Español</button>
+            <button class="lang-option" data-lang="pt">🇧🇷 Português</button>
+            <button class="lang-option" data-lang="id">🇮🇩 Indonesia</button>
+            <button class="lang-option" data-lang="tr">🇹🇷 Türkçe</button>
+            <button class="lang-option" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="hi">🇮🇳 हिन्दी</button>
+            <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+        </div>
+    </div>
+
+    <!-- App Screens -->
+    <div id="app">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <h1 class="title" data-i18n="menu.title">Maze Runner</h1>
+            <p class="subtitle" data-i18n="menu.subtitle">Navigate the maze. Collect the keys. Escape!</p>
+
+            <div class="stats-card">
+                <div class="stat-item">
+                    <span data-i18n="menu.bestStage">Best Stage</span>
+                    <span id="best-stage">0</span>
+                </div>
+                <div class="stat-item">
+                    <span data-i18n="menu.bestScore">Best Score</span>
+                    <span id="best-score">0</span>
+                </div>
+            </div>
+
+            <div class="mode-cards">
+                <div class="mode-card active" data-mode="normal">
+                    <div class="mode-icon">🏃</div>
+                    <div class="mode-name" data-i18n="modes.normal">Normal</div>
+                    <div class="mode-desc" data-i18n="modes.normalDesc">Classic maze solving at your own pace</div>
+                </div>
+                <div class="mode-card" data-mode="fog">
+                    <div class="mode-icon">🌫️</div>
+                    <div class="mode-name" data-i18n="modes.fog">Fog of War</div>
+                    <div class="mode-desc" data-i18n="modes.fogDesc">Limited visibility around your position</div>
+                </div>
+                <div class="mode-card" data-mode="timer">
+                    <div class="mode-icon">⏱️</div>
+                    <div class="mode-name" data-i18n="modes.timer">Time Attack</div>
+                    <div class="mode-desc" data-i18n="modes.timerDesc">Beat the clock before time runs out</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="startBtn" data-i18n="menu.start">Start Game</button>
+            <a class="home-link" href="/portal/" data-i18n="menu.homeLink">More Games</a>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-hud">
+                <div class="hud-item">
+                    <span class="hud-label" data-i18n="game.stage">Stage</span>
+                    <span class="hud-value" id="stage-display">1</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label" data-i18n="game.time">Time</span>
+                    <span class="hud-value" id="time-display">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label" data-i18n="game.score">Score</span>
+                    <span class="hud-value" id="score-display">0</span>
+                </div>
+            </div>
+
+            <div class="items-hud">
+                <span class="item-badge">🔑 <span id="key-count">0</span></span>
+                <span class="item-badge">⭐ <span id="bonus-count">0</span></span>
+                <span class="combo-badge hidden" id="combo-display">x1</span>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+
+            <div class="minimap-container">
+                <canvas id="minimapCanvas"></canvas>
+            </div>
+
+            <div class="powerup-container">
+                <button class="powerup-btn" id="hint-btn" data-i18n-title="game.hint" title="Hint">💡</button>
+                <button class="powerup-btn" id="minimap-btn" data-i18n-title="game.minimap" title="Minimap">🗺️</button>
+            </div>
+
+            <div class="dpad-container">
+                <div class="dpad-row">
+                    <span></span>
+                    <button class="dpad-btn" data-dir="up">▲</button>
+                    <span></span>
+                </div>
+                <div class="dpad-row">
+                    <button class="dpad-btn" data-dir="left">◀</button>
+                    <span></span>
+                    <button class="dpad-btn" data-dir="right">▶</button>
+                </div>
+                <div class="dpad-row">
+                    <span></span>
+                    <button class="dpad-btn" data-dir="down">▼</button>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Complete Screen -->
+        <div id="levelCompleteScreen" class="screen">
+            <h2 class="result-title" data-i18n="result.title">Level Complete!</h2>
+
+            <div class="star-rating">
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+            </div>
+
+            <div class="score-breakdown">
+                <div class="score-row">
+                    <span data-i18n="result.timeBonus">Time Bonus</span>
+                    <span id="result-time-bonus">0</span>
+                </div>
+                <div class="score-row">
+                    <span data-i18n="result.keysCollected">Keys Collected</span>
+                    <span id="result-keys">0</span>
+                </div>
+                <div class="score-row">
+                    <span data-i18n="result.bonusCollected">Bonus Collected</span>
+                    <span id="result-bonus">0</span>
+                </div>
+                <div class="score-row">
+                    <span data-i18n="result.comboBonus">Combo Bonus</span>
+                    <span id="result-combo">0</span>
+                </div>
+                <div class="score-row total-row">
+                    <span data-i18n="result.total">Total</span>
+                    <span id="result-total">0</span>
+                </div>
+            </div>
+
+            <div class="new-best-badge hidden" id="new-best-badge" data-i18n="result.newBest">New Best!</div>
+
+            <div class="result-buttons">
+                <button class="btn btn-primary" id="nextLevelBtn" data-i18n="result.nextLevel">Next Level</button>
+                <button class="btn btn-secondary" id="menuBtnComplete" data-i18n="result.menu">Menu</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen">
+            <h2 class="gameover-title" data-i18n="gameover.title">Game Over</h2>
+
+            <div class="gameover-stats">
+                <div class="gameover-stat">
+                    <span data-i18n="gameover.finalStage">Final Stage</span>
+                    <span id="final-stage">0</span>
+                </div>
+                <div class="gameover-stat">
+                    <span data-i18n="gameover.finalScore">Final Score</span>
+                    <span id="final-score">0</span>
+                </div>
+            </div>
+
+            <div class="gameover-buttons">
+                <button class="btn btn-primary" id="retryBtn" data-i18n="gameover.retry">Try Again</button>
+                <button class="btn btn-secondary" id="menuBtnOver" data-i18n="gameover.menu">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
 
     <!-- GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8GSWM40TV"></script>
@@ -45,182 +270,20 @@
         gtag('config', 'G-J8GSWM40TV');
     </script>
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
-    <link rel="apple-touch-icon" href="./icon-192.svg">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-left">
-                <h1 class="logo" data-i18n="header.title">Maze Runner</h1>
-            </div>
-            <div class="header-right">
-                <div class="language-selector">
-                    <button id="lang-toggle" class="lang-toggle" title="Language">🌐</button>
-                    <div id="lang-menu" class="lang-menu">
-                        <button class="lang-option" data-lang="ko">🇰🇷 한국어</button>
-                        <button class="lang-option" data-lang="en">🇺🇸 English</button>
-                        <button class="lang-option" data-lang="ja">🇯🇵 日本語</button>
-                        <button class="lang-option" data-lang="zh">🇨🇳 中文</button>
-                        <button class="lang-option" data-lang="es">🇪🇸 Español</button>
-                        <button class="lang-option" data-lang="pt">🇧🇷 Português</button>
-                        <button class="lang-option" data-lang="id">🇮🇩 Indonesia</button>
-                        <button class="lang-option" data-lang="tr">🇹🇷 Türkçe</button>
-                        <button class="lang-option" data-lang="de">🇩🇪 Deutsch</button>
-                        <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
-                        <button class="lang-option" data-lang="hi">🇮🇳 हिन्दी</button>
-                        <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
-                    </div>
-                </div>
-                <button id="sound-toggle" class="sound-toggle" title="Sound" data-i18n-title="control.sound">🔊</button>
-            </div>
-        </div>
-
-        <!-- AdSense Banner Top -->
-        <div class="ad-banner-top">
-            <ins class="adsbygoogle" style="display:inline-block;width:100%;height:60px" data-ad-client="ca-pub-3600813755953882" data-ad-slot="7654321"></ins>
-        </div>
-
-        <!-- Main Game Area -->
-        <div class="game-area">
-            <!-- Sidebar Stats -->
-            <div class="sidebar">
-                <div class="stat-panel">
-                    <div class="stat">
-                        <span class="label" data-i18n="stats.stage">Stage</span>
-                        <span class="value" id="stage-display">1</span>
-                    </div>
-                    <div class="stat">
-                        <span class="label" data-i18n="stats.time">Time</span>
-                        <span class="value" id="time-display">60</span>
-                    </div>
-                    <div class="stat">
-                        <span class="label" data-i18n="stats.score">Score</span>
-                        <span class="value" id="score-display">0</span>
-                    </div>
-                </div>
-
-                <div class="control-panel">
-                    <button id="hint-btn" class="btn btn-secondary" data-i18n="control.hint">Hint</button>
-                    <button id="minimap-toggle" class="btn btn-secondary" data-i18n="control.minimap">Minimap</button>
-                </div>
-
-                <div class="info-panel">
-                    <div class="items-info">
-                        <div data-i18n="items.title">Items</div>
-                        <div id="items-collected" class="items-list">
-                            <span>🔑 <span id="key-count">0</span></span>
-                            <span>⭐ <span id="bonus-count">0</span></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="best-score">
-                    <div data-i18n="stats.best">Best Score</div>
-                    <div class="best-value" id="best-score">0</div>
-                </div>
-            </div>
-
-            <!-- Canvas Area -->
-            <div class="canvas-wrapper">
-                <canvas id="gameCanvas"></canvas>
-                <div id="minimap-container" class="minimap-container hidden">
-                    <canvas id="minimapCanvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls Info -->
-        <div class="controls-info">
-            <div class="info-group">
-                <span data-i18n="controls.move">Move: WASD / Arrows / Swipe</span>
-            </div>
-            <div class="info-group">
-                <span data-i18n="controls.hint">Press H for Hint</span>
-            </div>
-        </div>
-
-        <!-- AdSense Banner Bottom -->
-        <div class="ad-banner-bottom">
-            <ins class="adsbygoogle" style="display:inline-block;width:100%;height:60px" data-ad-client="ca-pub-3600813755953882" data-ad-slot="7654322"></ins>
-        </div>
-    </div>
-
-    <!-- Modals -->
-    <div id="start-modal" class="modal">
-        <div class="modal-content">
-            <h2 data-i18n="modal.welcome">Welcome to Maze Runner</h2>
-            <p data-i18n="modal.description">Navigate through random mazes and collect items!</p>
-
-            <div class="mode-selector">
-                <label class="mode-option">
-                    <input type="radio" name="gameMode" value="normal" checked>
-                    <span data-i18n="modes.normal">Normal</span>
-                </label>
-                <label class="mode-option">
-                    <input type="radio" name="gameMode" value="fog">
-                    <span data-i18n="modes.fog">Fog of War</span>
-                </label>
-                <label class="mode-option">
-                    <input type="radio" name="gameMode" value="timer">
-                    <span data-i18n="modes.timer">Time Attack</span>
-                </label>
-            </div>
-
-            <button id="start-btn" class="btn btn-primary" data-i18n="modal.start">Start Game</button>
-        </div>
-    </div>
-
-    <div id="game-over-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2 data-i18n="modal.gameOver">Level Complete!</h2>
-            <div class="result-stats">
-                <div class="result-stat">
-                    <span data-i18n="stats.stage">Stage</span>
-                    <span id="result-stage">1</span>
-                </div>
-                <div class="result-stat">
-                    <span data-i18n="stats.score">Score</span>
-                    <span id="result-score">0</span>
-                </div>
-                <div class="result-stat">
-                    <span data-i18n="stats.time">Time Used</span>
-                    <span id="result-time">0s</span>
-                </div>
-            </div>
-            <div class="button-group">
-                <button id="next-btn" class="btn btn-primary" data-i18n="modal.next">Next Level</button>
-                <button id="restart-btn" class="btn btn-secondary" data-i18n="modal.restart">Restart</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="game-failed-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2 data-i18n="modal.timeOver">Time's Up!</h2>
-            <p data-i18n="modal.tryAgain">Better luck next time!</p>
-            <button id="retry-btn" class="btn btn-primary" data-i18n="modal.retry">Try Again</button>
-        </div>
-    </div>
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600813755953882" crossorigin="anonymous"></script>
 
     <!-- Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
+            navigator.serviceWorker.register('./sw.js').catch(function() {});
         }
     </script>
 
-    <!-- AdSense Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600813755953882" crossorigin="anonymous"></script>
-
-    <!-- Game Scripts -->
+    <!-- App Scripts -->
+    <script src="./js/error-handler.js"></script>
     <script src="./js/i18n.js"></script>
+    <script src="./js/sound-engine.js"></script>
     <script src="./js/app.js"></script>
     <script src="/portal/js/cross-promo.js" defer></script>
 </body>

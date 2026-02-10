@@ -1,40 +1,66 @@
 {
   "title": "Maze Runner - Keluar dari Labirin",
-  "header": {
-    "title": "Maze Runner"
+  "app": {
+    "loading": "Memuat..."
   },
-  "stats": {
-    "stage": "Level",
-    "time": "Waktu",
-    "score": "Skor",
-    "best": "Skor Terbaik"
-  },
-  "control": {
-    "hint": "Petunjuk",
-    "minimap": "Peta Mini",
-    "sound": "Suara"
-  },
-  "items": {
-    "title": "Item"
-  },
-  "controls": {
-    "move": "Bergerak: WASD / Panah / Usap",
-    "hint": "Tekan H untuk Petunjuk"
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Jelajahi labirin dan kumpulkan item!",
+    "bestStage": "Tahap Terbaik",
+    "bestScore": "Skor Terbaik",
+    "start": "Mulai",
+    "homeLink": "Game Lainnya"
   },
   "modes": {
-    "normal": "Mode Normal",
-    "fog": "Mode Kabut",
-    "timer": "Serangan Waktu"
+    "normal": "Normal",
+    "normalDesc": "Labirin klasik tanpa batas waktu",
+    "fog": "Kabut Perang",
+    "fogDesc": "Hanya bisa melihat sekitar pemain",
+    "timer": "Kejar Waktu",
+    "timerDesc": "Selesaikan sebelum waktu habis"
   },
-  "modal": {
-    "welcome": "Selamat Datang di Maze Runner",
-    "description": "Navigasi melalui labirin acak dan kumpulkan item!",
-    "start": "Mulai Permainan",
-    "gameOver": "Level Selesai!",
-    "timeOver": "Waktu Habis!",
-    "tryAgain": "Semoga berhasil lain kali!",
-    "next": "Level Berikutnya",
-    "restart": "Mulai Ulang",
-    "retry": "Coba Lagi"
+  "game": {
+    "stage": "Tahap",
+    "time": "Waktu",
+    "score": "Skor",
+    "keys": "Kunci",
+    "bonus": "Bonus",
+    "combo": "Kombo",
+    "hint": "Petunjuk",
+    "minimap": "Peta"
+  },
+  "items": {
+    "key": "Kunci",
+    "bonus": "Bintang Bonus",
+    "speedBoost": "Percepatan",
+    "timeFreezer": "Pembekuan Waktu"
+  },
+  "result": {
+    "title": "Tahap Selesai!",
+    "timeBonus": "Bonus Waktu",
+    "keysCollected": "Kunci",
+    "bonusCollected": "Bintang Bonus",
+    "comboBonus": "Bonus Kombo",
+    "total": "Total",
+    "nextLevel": "Tahap Berikutnya",
+    "menu": "Menu",
+    "newBest": "Rekor Baru!"
+  },
+  "gameover": {
+    "title": "Permainan Berakhir",
+    "finalStage": "Tahap Tercapai",
+    "finalScore": "Skor Akhir",
+    "retry": "Coba Lagi",
+    "menu": "Menu"
+  },
+  "toast": {
+    "comboX": "Kombo x{{n}}!",
+    "newBest": "Rekor Baru!",
+    "perfectClear": "Sempurna!",
+    "speedBoost": "Percepatan Aktif!",
+    "timeFrozen": "Waktu Dibekukan!"
+  },
+  "control": {
+    "sound": "Suara"
   }
 }

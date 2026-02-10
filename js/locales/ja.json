@@ -1,40 +1,66 @@
 {
-  "title": "迷路ランナー - 迷路から脱出しよう",
-  "header": {
-    "title": "迷路ランナー"
+  "title": "迷路ランナー - 迷路を攻略せよ",
+  "app": {
+    "loading": "読み込み中..."
   },
-  "stats": {
-    "stage": "ステージ",
-    "time": "時間",
-    "score": "スコア",
-    "best": "ベストスコア"
-  },
-  "control": {
-    "hint": "ヒント",
-    "minimap": "ミニマップ",
-    "sound": "音声"
-  },
-  "items": {
-    "title": "アイテム"
-  },
-  "controls": {
-    "move": "移動: WASD / 矢印キー / スワイプ",
-    "hint": "Hを押してヒントを表示"
+  "menu": {
+    "title": "迷路ランナー",
+    "subtitle": "迷路を進んでアイテムを集めよう！",
+    "bestStage": "最高ステージ",
+    "bestScore": "ハイスコア",
+    "start": "ゲームスタート",
+    "homeLink": "他のゲーム"
   },
   "modes": {
-    "normal": "ノーマルモード",
-    "fog": "霧のモード",
-    "timer": "タイムアタック"
+    "normal": "ノーマル",
+    "normalDesc": "時間制限なしのクラシック迷路",
+    "fog": "戦場の霧",
+    "fogDesc": "プレイヤーの周りだけ見える",
+    "timer": "タイムアタック",
+    "timerDesc": "制限時間内にクリアしよう"
   },
-  "modal": {
-    "welcome": "迷路ランナーへようこそ",
-    "description": "ランダムに生成された迷路を探索し、アイテムを集めましょう！",
-    "start": "ゲーム開始",
-    "gameOver": "ステージクリア！",
-    "timeOver": "時間切れです！",
-    "tryAgain": "次はうまくいくといいですね！",
-    "next": "次のレベル",
-    "restart": "リスタート",
-    "retry": "もう一度試す"
+  "game": {
+    "stage": "ステージ",
+    "time": "タイム",
+    "score": "スコア",
+    "keys": "カギ",
+    "bonus": "ボーナス",
+    "combo": "コンボ",
+    "hint": "ヒント",
+    "minimap": "マップ"
+  },
+  "items": {
+    "key": "カギ",
+    "bonus": "ボーナススター",
+    "speedBoost": "スピードアップ",
+    "timeFreezer": "タイムフリーズ"
+  },
+  "result": {
+    "title": "ステージクリア！",
+    "timeBonus": "タイムボーナス",
+    "keysCollected": "カギ",
+    "bonusCollected": "ボーナススター",
+    "comboBonus": "コンボボーナス",
+    "total": "合計",
+    "nextLevel": "次のステージ",
+    "menu": "メニュー",
+    "newBest": "新記録！"
+  },
+  "gameover": {
+    "title": "ゲームオーバー",
+    "finalStage": "到達ステージ",
+    "finalScore": "最終スコア",
+    "retry": "もう一度",
+    "menu": "メニュー"
+  },
+  "toast": {
+    "comboX": "コンボ x{{n}}！",
+    "newBest": "新記録達成！",
+    "perfectClear": "パーフェクトクリア！",
+    "speedBoost": "スピードアップ！",
+    "timeFrozen": "タイムフリーズ！"
+  },
+  "control": {
+    "sound": "サウンド"
   }
 }

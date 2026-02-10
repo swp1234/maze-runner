@@ -1,40 +1,66 @@
 {
-  "title": "Maze Runner - Fliehen Sie aus dem Labyrinth",
-  "header": {
-    "title": "Maze Runner"
+  "title": "Maze Runner - Flieh aus dem Labyrinth",
+  "app": {
+    "loading": "Lädt..."
   },
-  "stats": {
-    "stage": "Stufe",
-    "time": "Zeit",
-    "score": "Punkte",
-    "best": "Höchstpunktzahl"
-  },
-  "control": {
-    "hint": "Tipp",
-    "minimap": "Minikarte",
-    "sound": "Ton"
-  },
-  "items": {
-    "title": "Gegenstände"
-  },
-  "controls": {
-    "move": "Bewegen: WASD / Pfeiltasten / Wischen",
-    "hint": "Drücken Sie H für einen Tipp"
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Erkunde Labyrinthe und sammle Gegenstände!",
+    "bestStage": "Bestes Level",
+    "bestScore": "Highscore",
+    "start": "Spiel starten",
+    "homeLink": "Mehr Spiele"
   },
   "modes": {
-    "normal": "Normaler Modus",
-    "fog": "Kriegsnebel",
-    "timer": "Zeitangriff"
+    "normal": "Normal",
+    "normalDesc": "Klassisches Labyrinth ohne Zeitlimit",
+    "fog": "Nebel des Krieges",
+    "fogDesc": "Nur die Umgebung deiner Figur ist sichtbar",
+    "timer": "Zeitangriff",
+    "timerDesc": "Wettlauf gegen die Zeit"
   },
-  "modal": {
-    "welcome": "Willkommen bei Maze Runner",
-    "description": "Navigieren Sie durch zufällige Labyrinthe und sammeln Sie Gegenstände!",
-    "start": "Spiel Starten",
-    "gameOver": "Stufe Abgeschlossen!",
-    "timeOver": "Zeit Abgelaufen!",
-    "tryAgain": "Viel Glück beim nächsten Mal!",
-    "next": "Nächste Stufe",
-    "restart": "Neu Starten",
-    "retry": "Erneut Versuchen"
+  "game": {
+    "stage": "Level",
+    "time": "Zeit",
+    "score": "Punkte",
+    "keys": "Schlüssel",
+    "bonus": "Bonus",
+    "combo": "Kombo",
+    "hint": "Tipp",
+    "minimap": "Karte"
+  },
+  "items": {
+    "key": "Schlüssel",
+    "bonus": "Bonusstern",
+    "speedBoost": "Geschwindigkeitsschub",
+    "timeFreezer": "Zeitstillstand"
+  },
+  "result": {
+    "title": "Level geschafft!",
+    "timeBonus": "Zeitbonus",
+    "keysCollected": "Schlüssel",
+    "bonusCollected": "Bonussterne",
+    "comboBonus": "Kombobonus",
+    "total": "Gesamt",
+    "nextLevel": "Nächstes Level",
+    "menu": "Menü",
+    "newBest": "Neuer Rekord!"
+  },
+  "gameover": {
+    "title": "Spiel vorbei",
+    "finalStage": "Erreichtes Level",
+    "finalScore": "Endpunktzahl",
+    "retry": "Nochmal",
+    "menu": "Menü"
+  },
+  "toast": {
+    "comboX": "Kombo x{{n}}!",
+    "newBest": "Neuer Rekord!",
+    "perfectClear": "Perfekt!",
+    "speedBoost": "Geschwindigkeitsschub!",
+    "timeFrozen": "Zeit eingefroren!"
+  },
+  "control": {
+    "sound": "Ton"
   }
 }

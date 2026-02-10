@@ -1,40 +1,66 @@
 {
   "title": "Maze Runner - Labirentten Kaç",
-  "header": {
-    "title": "Maze Runner"
+  "app": {
+    "loading": "Yükleniyor..."
   },
-  "stats": {
-    "stage": "Seviye",
-    "time": "Zaman",
-    "score": "Skor",
-    "best": "En Yüksek Skor"
-  },
-  "control": {
-    "hint": "İpucu",
-    "minimap": "Mini Harita",
-    "sound": "Ses"
-  },
-  "items": {
-    "title": "Öğeler"
-  },
-  "controls": {
-    "move": "Hareket: WASD / Oklar / Kaydır",
-    "hint": "İpucu için H Tuşuna Bas"
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Labirentleri keşfet ve eşyaları topla!",
+    "bestStage": "En İyi Bölüm",
+    "bestScore": "En Yüksek Skor",
+    "start": "Oyuna Başla",
+    "homeLink": "Diğer Oyunlar"
   },
   "modes": {
-    "normal": "Normal Mod",
+    "normal": "Normal",
+    "normalDesc": "Süre sınırı olmayan klasik labirent",
     "fog": "Savaş Sisi",
-    "timer": "Zaman Saldırısı"
+    "fogDesc": "Sadece çevrenizi görebilirsiniz",
+    "timer": "Zamana Karşı",
+    "timerDesc": "Zamanla yarışın"
   },
-  "modal": {
-    "welcome": "Maze Runner'a Hoş Geldiniz",
-    "description": "Rastgele labirentler içinde gezinin ve öğeleri toplayın!",
-    "start": "Oyunu Başlat",
-    "gameOver": "Seviye Tamamlandı!",
-    "timeOver": "Zaman Doldu!",
-    "tryAgain": "Bir dahaki sefere daha şanslı olun!",
-    "next": "Sonraki Seviye",
-    "restart": "Yeniden Başlat",
-    "retry": "Tekrar Dene"
+  "game": {
+    "stage": "Bölüm",
+    "time": "Süre",
+    "score": "Skor",
+    "keys": "Anahtarlar",
+    "bonus": "Bonus",
+    "combo": "Kombo",
+    "hint": "İpucu",
+    "minimap": "Harita"
+  },
+  "items": {
+    "key": "Anahtar",
+    "bonus": "Bonus Yıldız",
+    "speedBoost": "Hız Artışı",
+    "timeFreezer": "Zaman Dondurma"
+  },
+  "result": {
+    "title": "Bölüm Tamamlandı!",
+    "timeBonus": "Süre Bonusu",
+    "keysCollected": "Anahtarlar",
+    "bonusCollected": "Bonus Yıldızlar",
+    "comboBonus": "Kombo Bonusu",
+    "total": "Toplam",
+    "nextLevel": "Sonraki Bölüm",
+    "menu": "Menü",
+    "newBest": "Yeni Rekor!"
+  },
+  "gameover": {
+    "title": "Oyun Bitti",
+    "finalStage": "Ulaşılan Bölüm",
+    "finalScore": "Son Skor",
+    "retry": "Tekrar Dene",
+    "menu": "Menü"
+  },
+  "toast": {
+    "comboX": "Kombo x{{n}}!",
+    "newBest": "Yeni Rekor!",
+    "perfectClear": "Mükemmel!",
+    "speedBoost": "Hız Artışı!",
+    "timeFrozen": "Zaman Donduruldu!"
+  },
+  "control": {
+    "sound": "Ses"
   }
 }

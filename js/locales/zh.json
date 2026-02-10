@@ -1,40 +1,66 @@
 {
   "title": "迷宫跑者 - 逃出迷宫",
-  "header": {
-    "title": "迷宫跑者"
+  "app": {
+    "loading": "加载中..."
   },
-  "stats": {
-    "stage": "关卡",
-    "time": "时间",
-    "score": "分数",
-    "best": "最高分数"
-  },
-  "control": {
-    "hint": "提示",
-    "minimap": "小地图",
-    "sound": "声音"
-  },
-  "items": {
-    "title": "物品"
-  },
-  "controls": {
-    "move": "移动: WASD / 方向键 / 滑动",
-    "hint": "按H显示提示"
+  "menu": {
+    "title": "迷宫跑者",
+    "subtitle": "穿越迷宫，收集道具！",
+    "bestStage": "最高关卡",
+    "bestScore": "最高分",
+    "start": "开始游戏",
+    "homeLink": "更多游戏"
   },
   "modes": {
     "normal": "普通模式",
-    "fog": "迷雾模式",
-    "timer": "时间挑战"
+    "normalDesc": "无时间限制的经典迷宫",
+    "fog": "战争迷雾",
+    "fogDesc": "只能看到角色周围",
+    "timer": "限时挑战",
+    "timerDesc": "在规定时间内通关"
   },
-  "modal": {
-    "welcome": "欢迎来到迷宫跑者",
-    "description": "在随机生成的迷宫中导航并收集物品！",
-    "start": "开始游戏",
-    "gameOver": "关卡完成！",
-    "timeOver": "时间到！",
-    "tryAgain": "下次加油！",
-    "next": "下一个关卡",
-    "restart": "重新开始",
-    "retry": "重试"
+  "game": {
+    "stage": "关卡",
+    "time": "时间",
+    "score": "分数",
+    "keys": "钥匙",
+    "bonus": "奖励",
+    "combo": "连击",
+    "hint": "提示",
+    "minimap": "地图"
+  },
+  "items": {
+    "key": "钥匙",
+    "bonus": "奖励之星",
+    "speedBoost": "加速",
+    "timeFreezer": "时间冻结"
+  },
+  "result": {
+    "title": "关卡通过！",
+    "timeBonus": "时间奖励",
+    "keysCollected": "钥匙",
+    "bonusCollected": "奖励之星",
+    "comboBonus": "连击奖励",
+    "total": "总分",
+    "nextLevel": "下一关",
+    "menu": "菜单",
+    "newBest": "新纪录！"
+  },
+  "gameover": {
+    "title": "游戏结束",
+    "finalStage": "到达关卡",
+    "finalScore": "最终得分",
+    "retry": "再试一次",
+    "menu": "菜单"
+  },
+  "toast": {
+    "comboX": "连击 x{{n}}！",
+    "newBest": "刷新纪录！",
+    "perfectClear": "完美通关！",
+    "speedBoost": "加速中！",
+    "timeFrozen": "时间冻结！"
+  },
+  "control": {
+    "sound": "音效"
   }
 }

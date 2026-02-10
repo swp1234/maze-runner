@@ -1,40 +1,66 @@
 {
-  "title": "Maze Runner - Échappez du Labyrinthe",
-  "header": {
-    "title": "Maze Runner"
+  "title": "Maze Runner - Échappe-toi du Labyrinthe",
+  "app": {
+    "loading": "Chargement..."
   },
-  "stats": {
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Parcours les labyrinthes et collecte des objets !",
+    "bestStage": "Meilleur Niveau",
+    "bestScore": "Meilleur Score",
+    "start": "Jouer",
+    "homeLink": "Plus de Jeux"
+  },
+  "modes": {
+    "normal": "Normal",
+    "normalDesc": "Labyrinthe classique sans limite de temps",
+    "fog": "Brouillard de Guerre",
+    "fogDesc": "Visibilité limitée autour du joueur",
+    "timer": "Contre-la-Montre",
+    "timerDesc": "Course contre le temps"
+  },
+  "game": {
     "stage": "Niveau",
     "time": "Temps",
     "score": "Score",
-    "best": "Meilleur Score"
-  },
-  "control": {
+    "keys": "Clés",
+    "bonus": "Bonus",
+    "combo": "Combo",
     "hint": "Indice",
-    "minimap": "Minimap",
-    "sound": "Son"
+    "minimap": "Carte"
   },
   "items": {
-    "title": "Objets"
+    "key": "Clé",
+    "bonus": "Étoile Bonus",
+    "speedBoost": "Accélération",
+    "timeFreezer": "Gel du Temps"
   },
-  "controls": {
-    "move": "Déplacer: WASD / Flèches / Glisser",
-    "hint": "Appuyez sur H pour un Indice"
+  "result": {
+    "title": "Niveau Terminé !",
+    "timeBonus": "Bonus de Temps",
+    "keysCollected": "Clés",
+    "bonusCollected": "Étoiles Bonus",
+    "comboBonus": "Bonus Combo",
+    "total": "Total",
+    "nextLevel": "Niveau Suivant",
+    "menu": "Menu",
+    "newBest": "Nouveau Record !"
   },
-  "modes": {
-    "normal": "Mode Normal",
-    "fog": "Brouillard de Guerre",
-    "timer": "Attaque Éclair"
+  "gameover": {
+    "title": "Partie Terminée",
+    "finalStage": "Niveau Atteint",
+    "finalScore": "Score Final",
+    "retry": "Réessayer",
+    "menu": "Menu"
   },
-  "modal": {
-    "welcome": "Bienvenue dans Maze Runner",
-    "description": "Naviguez dans des labyrinthes aléatoires et collectez des objets!",
-    "start": "Commencer le Jeu",
-    "gameOver": "Niveau Complété!",
-    "timeOver": "Temps Écoulé!",
-    "tryAgain": "Bonne chance la prochaine fois!",
-    "next": "Niveau Suivant",
-    "restart": "Recommencer",
-    "retry": "Réessayer"
+  "toast": {
+    "comboX": "Combo x{{n}} !",
+    "newBest": "Nouveau Record !",
+    "perfectClear": "Parfait !",
+    "speedBoost": "Accélération !",
+    "timeFrozen": "Temps Gelé !"
+  },
+  "control": {
+    "sound": "Son"
   }
 }

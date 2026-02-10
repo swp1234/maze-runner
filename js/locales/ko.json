@@ -1,40 +1,66 @@
 {
-  "title": "미로 러너 - 미로를 탈출하세요",
-  "header": {
-    "title": "미로 러너"
+  "title": "미로 탈출 - 미로를 탈출하라",
+  "app": {
+    "loading": "로딩 중..."
   },
-  "stats": {
-    "stage": "스테이지",
-    "time": "시간",
-    "score": "점수",
-    "best": "최고 기록"
-  },
-  "control": {
-    "hint": "힌트",
-    "minimap": "미니맵",
-    "sound": "음성"
-  },
-  "items": {
-    "title": "아이템"
-  },
-  "controls": {
-    "move": "이동: WASD / 화살표 / 스와이프",
-    "hint": "H를 눌러 힌트 보기"
+  "menu": {
+    "title": "미로 탈출",
+    "subtitle": "미로를 탐험하고 아이템을 수집하세요!",
+    "bestStage": "최고 스테이지",
+    "bestScore": "최고 점수",
+    "start": "게임 시작",
+    "homeLink": "더 많은 게임"
   },
   "modes": {
     "normal": "일반 모드",
-    "fog": "안개 모드",
-    "timer": "시간 공격"
+    "normalDesc": "시간 제한 없는 클래식 미로",
+    "fog": "전장의 안개",
+    "fogDesc": "플레이어 주변만 보입니다",
+    "timer": "타임 어택",
+    "timerDesc": "시간 안에 클리어하세요"
   },
-  "modal": {
-    "welcome": "미로 러너에 오신 것을 환영합니다",
-    "description": "무작위로 생성된 미로를 탐색하고 아이템을 수집하세요!",
-    "start": "게임 시작",
-    "gameOver": "레벨 완료!",
-    "timeOver": "시간이 끝났습니다!",
-    "tryAgain": "더 좋은 성과를 기대합니다!",
-    "next": "다음 레벨",
-    "restart": "다시 시작",
-    "retry": "다시 시도"
+  "game": {
+    "stage": "스테이지",
+    "time": "시간",
+    "score": "점수",
+    "keys": "열쇠",
+    "bonus": "보너스",
+    "combo": "콤보",
+    "hint": "힌트",
+    "minimap": "지도"
+  },
+  "items": {
+    "key": "열쇠",
+    "bonus": "보너스 별",
+    "speedBoost": "속도 증가",
+    "timeFreezer": "시간 정지"
+  },
+  "result": {
+    "title": "스테이지 클리어!",
+    "timeBonus": "시간 보너스",
+    "keysCollected": "열쇠",
+    "bonusCollected": "보너스 별",
+    "comboBonus": "콤보 보너스",
+    "total": "합계",
+    "nextLevel": "다음 스테이지",
+    "menu": "메뉴",
+    "newBest": "신기록!"
+  },
+  "gameover": {
+    "title": "게임 오버",
+    "finalStage": "도달 스테이지",
+    "finalScore": "최종 점수",
+    "retry": "다시 하기",
+    "menu": "메뉴"
+  },
+  "toast": {
+    "comboX": "콤보 x{{n}}!",
+    "newBest": "신기록 달성!",
+    "perfectClear": "퍼펙트 클리어!",
+    "speedBoost": "속도 증가!",
+    "timeFrozen": "시간 정지!"
+  },
+  "control": {
+    "sound": "사운드"
   }
 }

@@ -1,40 +1,66 @@
 {
-  "title": "Maze Runner - Escape do Labirinto",
-  "header": {
-    "title": "Maze Runner"
+  "title": "Maze Runner - Fuja do Labirinto",
+  "app": {
+    "loading": "Carregando..."
   },
-  "stats": {
-    "stage": "Nível",
-    "time": "Tempo",
-    "score": "Pontuação",
-    "best": "Melhor Pontuação"
-  },
-  "control": {
-    "hint": "Dica",
-    "minimap": "Minimapa",
-    "sound": "Som"
-  },
-  "items": {
-    "title": "Itens"
-  },
-  "controls": {
-    "move": "Mover: WASD / Setas / Deslizar",
-    "hint": "Pressione H para Dica"
+  "menu": {
+    "title": "Maze Runner",
+    "subtitle": "Explore labirintos e colete itens!",
+    "bestStage": "Melhor Fase",
+    "bestScore": "Melhor Pontuação",
+    "start": "Jogar",
+    "homeLink": "Mais Jogos"
   },
   "modes": {
-    "normal": "Modo Normal",
+    "normal": "Normal",
+    "normalDesc": "Labirinto clássico sem limite de tempo",
     "fog": "Névoa de Guerra",
-    "timer": "Ataque de Tempo"
+    "fogDesc": "Veja apenas ao redor do seu personagem",
+    "timer": "Contra o Relógio",
+    "timerDesc": "Corra contra o tempo"
   },
-  "modal": {
-    "welcome": "Bem-vindo ao Maze Runner",
-    "description": "Navegue por labirintos aleatórios e colete itens!",
-    "start": "Iniciar Jogo",
-    "gameOver": "Nível Completo!",
-    "timeOver": "Tempo Acabou!",
-    "tryAgain": "Melhor sorte na próxima vez!",
-    "next": "Próximo Nível",
-    "restart": "Reiniciar",
-    "retry": "Tentar Novamente"
+  "game": {
+    "stage": "Fase",
+    "time": "Tempo",
+    "score": "Pontos",
+    "keys": "Chaves",
+    "bonus": "Bônus",
+    "combo": "Combo",
+    "hint": "Dica",
+    "minimap": "Mapa"
+  },
+  "items": {
+    "key": "Chave",
+    "bonus": "Estrela Bônus",
+    "speedBoost": "Turbo",
+    "timeFreezer": "Congelar Tempo"
+  },
+  "result": {
+    "title": "Fase Completa!",
+    "timeBonus": "Bônus de Tempo",
+    "keysCollected": "Chaves",
+    "bonusCollected": "Estrelas Bônus",
+    "comboBonus": "Bônus de Combo",
+    "total": "Total",
+    "nextLevel": "Próxima Fase",
+    "menu": "Menu",
+    "newBest": "Novo Recorde!"
+  },
+  "gameover": {
+    "title": "Fim de Jogo",
+    "finalStage": "Fase Alcançada",
+    "finalScore": "Pontuação Final",
+    "retry": "Tentar Novamente",
+    "menu": "Menu"
+  },
+  "toast": {
+    "comboX": "Combo x{{n}}!",
+    "newBest": "Novo Recorde!",
+    "perfectClear": "Perfeito!",
+    "speedBoost": "Turbo Ativado!",
+    "timeFrozen": "Tempo Congelado!"
+  },
+  "control": {
+    "sound": "Som"
   }
 }
