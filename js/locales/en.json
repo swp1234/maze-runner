@@ -13,11 +13,11 @@
   },
   "modes": {
     "normal": "Normal",
-    "normalDesc": "Classic maze with no time limit",
+    "normalDesc": "Collect all keys to unlock the exit",
     "fog": "Fog of War",
-    "fogDesc": "Only see around your player",
+    "fogDesc": "Limited vision, shrinks each stage",
     "timer": "Time Attack",
-    "timerDesc": "Race against the clock"
+    "timerDesc": "Time gets tighter each stage"
   },
   "game": {
     "stage": "Stage",
@@ -58,7 +58,9 @@
     "newBest": "New Record!",
     "perfectClear": "Perfect Clear!",
     "speedBoost": "Speed Boost!",
-    "timeFrozen": "Time Frozen!"
+    "timeFrozen": "Time Frozen!",
+    "exitUnlocked": "Exit Unlocked!",
+    "trapTriggered": "Trap! Back to Start!"
   },
   "control": {
     "sound": "Sound"

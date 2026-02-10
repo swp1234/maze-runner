@@ -262,6 +262,13 @@ class Game {
         // Fog mode
         this.fogRadius = 3;
 
+        // Traps
+        this.traps = [];
+        this.trapCooldown = 0; // prevent instant re-trigger
+
+        // Gate system: exit locked until all keys collected
+        this.exitUnlocked = false;
+
         // Particles
         this.particles = new ParticleSystem();
 
@@ -593,8 +600,12 @@ class Game {
         this.player.y = 1.5;
         this.player.trail = [];
 
-        // Time
-        this.maxTime = (60 + this.stage * 10) * 1000;
+        // Time: scales with maze AREA but pressure increases at higher stages
+        // Stage 1 (7x7=49 cells): ~50s, Stage 4 (13x13=169): ~65s, Stage 8 (21x21=441): ~80s
+        // Formula: sqrt(area) * factor, factor decreases with stage
+        const area = mazeSize * mazeSize;
+        const timeFactor = Math.max(0.55, 1.0 - this.stage * 0.05); // 1.0 → 0.55
+        this.maxTime = Math.floor(Math.sqrt(area) * 8 * timeFactor) * 1000;
         this.timeLeft = this.maxTime;
         this.timeUsed = 0;
 
@@ -621,9 +632,17 @@ class Game {
         const minimapContainer = document.querySelector('.minimap-container');
         if (minimapContainer) minimapContainer.classList.remove('visible');
 
-        // Fog
-        this.fogRadius = 3;
+        // Fog: radius shrinks at higher stages (3.0 → 1.8 minimum)
+        this.fogRadius = Math.max(1.8, 3.0 - (this.stage - 1) * 0.15);
+        this.baseFogRadius = this.fogRadius;
         this.exploredCells = new Set();
+
+        // Exit gate: locked until all keys collected
+        this.exitUnlocked = false;
+
+        // Traps
+        this.traps = [];
+        this.trapCooldown = 0;
 
         // Particles
         this.particles = new ParticleSystem();
@@ -720,6 +739,19 @@ class Game {
                 type: 'timeFreezer',
                 collected: false
             });
+        }
+
+        // Trap tiles: stage 3+, warps player back to start
+        if (this.stage >= 3) {
+            const trapCount = Math.min(1 + Math.floor((this.stage - 3) / 2), 5);
+            for (let i = 0; i < trapCount; i++) {
+                const cell = pickCell();
+                this.traps.push({
+                    x: cell.x + 0.5,
+                    y: cell.y + 0.5,
+                    triggered: false
+                });
+            }
         }
     }
 
@@ -974,21 +1006,61 @@ class Game {
                     }
                 }
 
-                // Update fog radius on key collect
+                // Update fog radius on key collect (grows from shrunken base)
                 if (this.gameMode === 'fog') {
-                    this.fogRadius = 3 + this.keysCollected * 0.3;
+                    this.fogRadius = this.baseFogRadius + this.keysCollected * 0.3;
+                }
+
+                // Check gate unlock
+                if (this.keysCollected >= this.totalKeys && !this.exitUnlocked) {
+                    this.exitUnlocked = true;
+                    this.showToast('exitUnlocked');
+                    if (this.sfx && this.sfx.perfect) {
+                        try { this.sfx.perfect(); } catch (e) { /* ignore */ }
+                    }
                 }
             }
         }
 
-        // ---- Win check ----
+        // ---- Trap check ----
+        if (this.trapCooldown > 0) {
+            this.trapCooldown -= dt;
+        } else {
+            for (const trap of this.traps) {
+                const tx = this.player.x - trap.x;
+                const ty = this.player.y - trap.y;
+                const tDist = Math.sqrt(tx * tx + ty * ty);
+                if (tDist < 0.45) {
+                    // Warp back to start
+                    this.player.x = 1.5;
+                    this.player.y = 1.5;
+                    this.player.trail = [];
+                    this.trapCooldown = 1.5; // immunity after warp
+                    this.showToast('trapTriggered');
+                    if (this.sfx && this.sfx.hit) {
+                        try { this.sfx.hit(); } catch (e) { /* ignore */ }
+                    }
+                    // Penalty: lose 3 seconds in timer mode
+                    if (this.gameMode === 'timer') {
+                        this.timeLeft -= 3000;
+                    }
+                    const screenTX = this.renderOffsetX + trap.x * this.renderScale;
+                    const screenTY = this.renderOffsetY + trap.y * this.renderScale;
+                    this.particles.addSparkles(screenTX, screenTY, '#e74c3c', 10);
+                    this.particles.addFloatingText('TRAP!', screenTX, screenTY - 10, '#e74c3c');
+                    break;
+                }
+            }
+        }
+
+        // ---- Win check (only if exit unlocked) ----
         const exitX = this.maze.width - 1.5;
         const exitY = this.maze.height - 1.5;
         const exitDist = Math.sqrt(
             (this.player.x - exitX) * (this.player.x - exitX) +
             (this.player.y - exitY) * (this.player.y - exitY)
         );
-        if (exitDist < 0.6) {
+        if (exitDist < 0.6 && this.exitUnlocked) {
             this.levelComplete();
             return;
         }
@@ -1043,6 +1115,7 @@ class Game {
 
             // First draw the full scene
             this.drawMaze(ctx, offsetX, offsetY, scale);
+            this.drawTraps(ctx, offsetX, offsetY, scale);
             this.drawItems(ctx, offsetX, offsetY, scale);
             this.drawExit(ctx, offsetX, offsetY, scale);
             this.drawTrail(ctx, offsetX, offsetY, scale);
@@ -1068,6 +1141,7 @@ class Game {
         } else {
             // Normal / Timer mode: draw everything normally
             this.drawMaze(ctx, offsetX, offsetY, scale);
+            this.drawTraps(ctx, offsetX, offsetY, scale);
             this.drawItems(ctx, offsetX, offsetY, scale);
             this.drawExit(ctx, offsetX, offsetY, scale);
             this.drawTrail(ctx, offsetX, offsetY, scale);
@@ -1312,40 +1386,100 @@ class Game {
         const px = ox + exitX * scale;
         const py = oy + exitY * scale;
 
-        // Pulsing
         const pulse = Math.sin(Date.now() / 400) * 0.05 + 1;
         const size = scale * 0.38 * pulse;
 
         ctx.save();
 
-        // Glow
-        ctx.shadowColor = '#1abc9c';
-        ctx.shadowBlur = 20;
+        if (this.exitUnlocked) {
+            // UNLOCKED: bright green glow
+            ctx.shadowColor = '#2ecc71';
+            ctx.shadowBlur = 25;
+            ctx.fillStyle = '#2ecc71';
+            ctx.beginPath();
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+            ctx.fill();
 
-        // Circle
-        ctx.fillStyle = '#1abc9c';
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, Math.PI * 2);
-        ctx.fill();
+            ctx.strokeStyle = 'rgba(46, 204, 113, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(px, py, size + 4, 0, Math.PI * 2);
+            ctx.stroke();
 
-        // Outer ring
-        ctx.strokeStyle = 'rgba(26, 188, 156, 0.4)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(px, py, size + 4, 0, Math.PI * 2);
-        ctx.stroke();
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
 
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
+            const fontSize = Math.max(10, Math.floor(scale * 0.4));
+            ctx.font = `${fontSize}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🚪', px, py);
+        } else {
+            // LOCKED: dim red, locked icon
+            ctx.shadowColor = '#e74c3c';
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.4)';
+            ctx.beginPath();
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+            ctx.fill();
 
-        // Flag emoji
-        const fontSize = Math.max(10, Math.floor(scale * 0.4));
-        ctx.font = `${fontSize}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('🚩', px, py);
+            ctx.strokeStyle = 'rgba(231, 76, 60, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(px, py, size + 4, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+
+            const fontSize = Math.max(10, Math.floor(scale * 0.4));
+            ctx.font = `${fontSize}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🔒', px, py);
+
+            // Show remaining keys needed
+            const remaining = this.totalKeys - this.keysCollected;
+            if (remaining > 0) {
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = `bold ${Math.max(8, Math.floor(scale * 0.25))}px sans-serif`;
+                ctx.fillText(`🔑x${remaining}`, px, py + size + 8);
+            }
+        }
 
         ctx.restore();
+    }
+
+    drawTraps(ctx, ox, oy, scale) {
+        for (const trap of this.traps) {
+            const px = ox + trap.x * scale;
+            const py = oy + trap.y * scale;
+            const floatY = Math.sin(Date.now() / 600 + trap.x * 3) * 2;
+            const size = scale * 0.28;
+
+            ctx.save();
+            ctx.shadowColor = '#e74c3c';
+            ctx.shadowBlur = 8;
+
+            // Pulsing red circle
+            const pulse = 0.3 + Math.sin(Date.now() / 300) * 0.15;
+            ctx.fillStyle = `rgba(231, 76, 60, ${pulse})`;
+            ctx.beginPath();
+            ctx.arc(px, py + floatY, size + 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+
+            // Skull emoji
+            const fontSize = Math.max(8, Math.floor(scale * 0.3));
+            ctx.font = `${fontSize}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('💀', px, py + floatY);
+
+            ctx.restore();
+        }
     }
 
     drawHint(ctx, ox, oy, scale) {
@@ -1432,10 +1566,24 @@ class Game {
             mctx.fill();
         }
 
+        // Draw traps on minimap
+        for (const trap of this.traps) {
+            if (this.gameMode === 'fog') {
+                const cellKey = `${Math.floor(trap.x)},${Math.floor(trap.y)}`;
+                if (!this.exploredCells.has(cellKey)) continue;
+            }
+            const tpx = mapOffX + trap.x * cellSize;
+            const tpy = mapOffY + trap.y * cellSize;
+            mctx.fillStyle = '#e74c3c';
+            mctx.beginPath();
+            mctx.arc(tpx, tpy, Math.max(1.5, cellSize * 0.3), 0, Math.PI * 2);
+            mctx.fill();
+        }
+
         // Draw exit
         const exitPx = mapOffX + (this.maze.width - 1.5) * cellSize;
         const exitPy = mapOffY + (this.maze.height - 1.5) * cellSize;
-        mctx.fillStyle = '#1abc9c';
+        mctx.fillStyle = this.exitUnlocked ? '#2ecc71' : '#e74c3c';
         mctx.beginPath();
         mctx.arc(exitPx, exitPy, Math.max(2, cellSize * 0.5), 0, Math.PI * 2);
         mctx.fill();
@@ -1644,7 +1792,9 @@ class Game {
         const fallbackMap = {
             'speedBoost': 'Speed Boost!',
             'timeFrozen': 'Time Frozen!',
-            'comboX': 'Combo x' + this.comboCount + '!'
+            'comboX': 'Combo x' + this.comboCount + '!',
+            'exitUnlocked': '🔓 Exit Unlocked!',
+            'trapTriggered': '💀 Trap! Back to Start!'
         };
 
         // Try i18n first
@@ -1715,7 +1865,7 @@ class Game {
         }
 
         if (scoreEl) scoreEl.textContent = this.totalScore;
-        if (keyEl) keyEl.textContent = this.keysCollected;
+        if (keyEl) keyEl.textContent = `${this.keysCollected}/${this.totalKeys}`;
         if (bonusEl) bonusEl.textContent = this.bonusCollected;
     }
 

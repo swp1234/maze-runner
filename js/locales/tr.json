@@ -58,7 +58,9 @@
     "newBest": "Yeni Rekor!",
     "perfectClear": "Mükemmel!",
     "speedBoost": "Hız Artışı!",
-    "timeFrozen": "Zaman Donduruldu!"
+    "timeFrozen": "Zaman Donduruldu!",
+    "exitUnlocked": "Çıkış açıldı!",
+    "trapTriggered": "Tuzak! Başa dön!"
   },
   "control": {
     "sound": "Ses"

@@ -58,7 +58,9 @@
     "newBest": "Nouveau Record !",
     "perfectClear": "Parfait !",
     "speedBoost": "Accélération !",
-    "timeFrozen": "Temps Gelé !"
+    "timeFrozen": "Temps Gelé !",
+    "exitUnlocked": "Sortie déverrouillée !",
+    "trapTriggered": "Piège ! Retour au départ !"
   },
   "control": {
     "sound": "Son"

@@ -58,7 +58,9 @@
     "newBest": "刷新纪录！",
     "perfectClear": "完美通关！",
     "speedBoost": "加速中！",
-    "timeFrozen": "时间冻结！"
+    "timeFrozen": "时间冻结！",
+    "exitUnlocked": "出口已解锁！",
+    "trapTriggered": "陷阱！回到起点！"
   },
   "control": {
     "sound": "音效"

@@ -58,7 +58,9 @@
     "newBest": "नया रिकॉर्ड!",
     "perfectClear": "परफेक्ट क्लियर!",
     "speedBoost": "स्पीड बूस्ट!",
-    "timeFrozen": "समय रुका!"
+    "timeFrozen": "समय रुका!",
+    "exitUnlocked": "निकास खुल गया!",
+    "trapTriggered": "जाल! शुरुआत पर वापस!"
   },
   "control": {
     "sound": "ध्वनि"

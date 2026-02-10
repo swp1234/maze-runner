@@ -58,7 +58,9 @@
     "newBest": "Новый Рекорд!",
     "perfectClear": "Идеальное Прохождение!",
     "speedBoost": "Ускорение!",
-    "timeFrozen": "Время Заморожено!"
+    "timeFrozen": "Время Заморожено!",
+    "exitUnlocked": "Выход открыт!",
+    "trapTriggered": "Ловушка! Назад к старту!"
   },
   "control": {
     "sound": "Звук"

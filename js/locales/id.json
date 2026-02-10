@@ -58,7 +58,9 @@
     "newBest": "Rekor Baru!",
     "perfectClear": "Sempurna!",
     "speedBoost": "Percepatan Aktif!",
-    "timeFrozen": "Waktu Dibekukan!"
+    "timeFrozen": "Waktu Dibekukan!",
+    "exitUnlocked": "Pintu keluar terbuka!",
+    "trapTriggered": "Jebakan! Kembali ke awal!"
   },
   "control": {
     "sound": "Suara"

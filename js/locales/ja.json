@@ -58,7 +58,9 @@
     "newBest": "新記録達成！",
     "perfectClear": "パーフェクトクリア！",
     "speedBoost": "スピードアップ！",
-    "timeFrozen": "タイムフリーズ！"
+    "timeFrozen": "タイムフリーズ！",
+    "exitUnlocked": "出口解放！",
+    "trapTriggered": "トラップ！スタートに戻る！"
   },
   "control": {
     "sound": "サウンド"
