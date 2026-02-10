@@ -268,8 +268,8 @@ class Game {
         const mazeSize = Math.min(5 + Math.floor(this.stage / 2) * 2, 21);
         this.maze = new MazeGenerator(mazeSize, mazeSize);
 
-        // Set time limit based on stage
-        this.timeLeft = 60 + (this.stage - 1) * 10;
+        // Set time limit based on stage (in milliseconds)
+        this.timeLeft = (60 + (this.stage - 1) * 10) * 1000;
         this.timeUsed = 0;
 
         // Set player position at start
@@ -390,11 +390,23 @@ class Game {
     }
 
     updateUI() {
-        document.getElementById('stage-display').textContent = this.stage;
-        document.getElementById('time-display').textContent = Math.max(0, Math.ceil(this.timeLeft / 1000));
-        document.getElementById('score-display').textContent = this.score;
-        document.getElementById('key-count').textContent = this.itemsCollected.keys;
-        document.getElementById('bonus-count').textContent = this.itemsCollected.bonus;
+        const stageEl = document.getElementById('stage-display');
+        const timeEl = document.getElementById('time-display');
+        const scoreEl = document.getElementById('score-display');
+        const keyEl = document.getElementById('key-count');
+        const bonusEl = document.getElementById('bonus-count');
+
+        if (stageEl) stageEl.textContent = this.stage;
+        if (timeEl) {
+            if (this.gameMode === 'timer') {
+                timeEl.textContent = Math.max(0, Math.ceil(this.timeLeft / 1000));
+            } else {
+                timeEl.textContent = Math.ceil(this.timeUsed / 1000);
+            }
+        }
+        if (scoreEl) scoreEl.textContent = this.score;
+        if (keyEl) keyEl.textContent = this.itemsCollected.keys;
+        if (bonusEl) bonusEl.textContent = this.itemsCollected.bonus;
     }
 
     updateBestScore() {
@@ -405,11 +417,13 @@ class Game {
         if (this.gameState !== 'PLAYING') return;
 
         // Update time
-        this.timeLeft -= deltaTime;
         this.timeUsed += deltaTime;
+        if (this.gameMode === 'timer') {
+            this.timeLeft -= deltaTime;
+        }
 
-        // Check time limit
-        if (this.timeLeft <= 0) {
+        // Check time limit (timer mode only)
+        if (this.gameMode === 'timer' && this.timeLeft <= 0) {
             this.timeLeft = 0;
             this.endGame(false);
             return;
@@ -777,7 +791,17 @@ class Game {
 }
 
 // Initialize game when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize i18n first, but don't let it block the game
+    try {
+        if (typeof i18n !== 'undefined' && i18n.init) {
+            await i18n.init();
+        }
+    } catch (e) {
+        console.warn('i18n initialization failed, continuing with defaults:', e);
+    }
+
+    // Always start the game regardless of i18n status
     const game = new Game();
     game.run();
 });
