@@ -1137,7 +1137,196 @@ a:focus:not(:focus-visible) {
 }
 
 /* =========================
-   21. Scrollbar (for potential overflow areas)
+   21. Light Mode
+   ========================= */
+[data-theme="light"] {
+    --bg: #f5f5fa;
+    --bg-2: #ffffff;
+    --bg-3: #f8f8fc;
+    --text: #1a1a2e;
+    --text-dim: #5a5a70;
+    --glass-bg: rgba(26, 188, 156, 0.05);
+    --glass-border: rgba(26, 188, 156, 0.15);
+}
+
+[data-theme="light"] body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+[data-theme="light"] .app-loader {
+    background: var(--bg);
+}
+
+[data-theme="light"] #startScreen,
+[data-theme="light"] #levelCompleteScreen,
+[data-theme="light"] #gameOverScreen {
+    background:
+        radial-gradient(ellipse at 50% 20%, rgba(26, 188, 156, 0.03) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(72, 219, 251, 0.02) 0%, transparent 50%),
+        var(--bg);
+}
+
+[data-theme="light"] .sound-toggle,
+[data-theme="light"] .lang-toggle {
+    background: rgba(26, 188, 156, 0.1);
+    border-color: rgba(26, 188, 156, 0.2);
+    color: var(--text);
+}
+
+[data-theme="light"] .lang-menu {
+    background: var(--bg-2);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .lang-option {
+    color: var(--text);
+}
+
+[data-theme="light"] .lang-option:hover {
+    background: rgba(26, 188, 156, 0.1);
+}
+
+[data-theme="light"] .lang-option.active {
+    background: var(--primary);
+    color: #000;
+}
+
+[data-theme="light"] .stats-card {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .mode-card {
+    background: var(--glass-bg);
+    border-color: transparent;
+}
+
+[data-theme="light"] .mode-card:hover {
+    border-color: rgba(26, 188, 156, 0.2);
+}
+
+[data-theme="light"] .mode-card.active {
+    border-color: var(--primary);
+    background: rgba(26, 188, 156, 0.1);
+}
+
+[data-theme="light"] .btn-secondary {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--primary);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    background: rgba(26, 188, 156, 0.1);
+}
+
+[data-theme="light"] #gameScreen {
+    background: var(--bg);
+}
+
+[data-theme="light"] .game-hud {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .item-badge,
+[data-theme="light"] .combo-badge {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .dpad-btn {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--text);
+}
+
+[data-theme="light"] .powerup-btn {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--text);
+}
+
+[data-theme="light"] .minimap-container {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .score-breakdown {
+    background: var(--bg-2);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+}
+
+[data-theme="light"] .score-row {
+    border-bottom-color: rgba(26, 188, 156, 0.1);
+}
+
+[data-theme="light"] .score-row.total-row {
+    border-top-color: var(--primary);
+}
+
+[data-theme="light"] .new-best-badge {
+    background: rgba(241, 196, 15, 0.1);
+    color: var(--warning);
+}
+
+[data-theme="light"] .gameover-stat {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+[data-theme="light"] .toast {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--text);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 124px;
+    z-index: 200;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.theme-toggle:hover {
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+[data-theme="light"] .theme-toggle {
+    background: rgba(26, 188, 156, 0.1);
+    border-color: rgba(26, 188, 156, 0.2);
+    color: var(--text);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+    background: rgba(26, 188, 156, 0.15);
+}
+
+/* =========================
+   22. Scrollbar (for potential overflow areas)
    ========================= */
 ::-webkit-scrollbar {
     width: 6px;
