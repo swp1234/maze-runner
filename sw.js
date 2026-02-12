@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maze-runner-v1';
+const CACHE_NAME = 'maze-runner-v2';
 const ASSETS = [
     './index.html',
     './css/style.css',
@@ -47,36 +47,27 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - network first, fallback to cache
 self.addEventListener('fetch', (event) => {
-    // Only handle GET requests
-    if (event.request.method !== 'GET') {
-        return;
-    }
+    if (event.request.method !== 'GET') return;
+
+    // Skip external requests (ads, analytics, etc.)
+    if (!event.request.url.startsWith(self.location.origin)) return;
 
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) {
-                return response;
-            }
-
-            return fetch(event.request).then((response) => {
-                // Don't cache non-successful responses
-                if (!response || response.status !== 200 || response.type === 'error') {
-                    return response;
+        fetch(event.request)
+            .then((response) => {
+                if (response && response.status === 200) {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseToCache);
+                    });
                 }
-
-                // Cache successful responses
-                const responseToCache = response.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
-                });
-
                 return response;
-            }).catch(() => {
-                // Return offline page or cached response
-                return caches.match(event.request);
-            });
-        })
+            })
+            .catch(() => {
+                return caches.match(event.request)
+                    .then((cached) => cached || caches.match('./index.html'));
+            })
     );
 });
