@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "Sound"
+  },
+  "accessibility": {
+    "skipToMain": "Skip to content"
   }
 }

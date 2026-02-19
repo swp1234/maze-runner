@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "音效"
+  },
+  "accessibility": {
+    "skipToMain": "跳到内容"
   }
 }

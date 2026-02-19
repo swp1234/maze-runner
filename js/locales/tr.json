@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "Ses"
+  },
+  "accessibility": {
+    "skipToMain": "İçeriğe geç"
   }
 }

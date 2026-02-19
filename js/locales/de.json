@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "Ton"
+  },
+  "accessibility": {
+    "skipToMain": "Zum Inhalt"
   }
 }

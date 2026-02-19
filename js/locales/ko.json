@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "사운드"
+  },
+  "accessibility": {
+    "skipToMain": "본문으로 이동"
   }
 }

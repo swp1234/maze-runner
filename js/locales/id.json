@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "Suara"
+  },
+  "accessibility": {
+    "skipToMain": "Lewati ke konten"
   }
 }

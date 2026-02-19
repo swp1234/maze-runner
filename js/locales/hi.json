@@ -64,5 +64,8 @@
   },
   "control": {
     "sound": "ध्वनि"
+  },
+  "accessibility": {
+    "skipToMain": "सामग्री पर जाएं"
   }
 }
