@@ -1955,8 +1955,15 @@ class Game {
         if (typeof Haptic !== 'undefined') Haptic.heavy();
 
         // Show screen
-        this.showScreen('gameOver');
-        this.updateResumeButton();
+        if (typeof GameAds !== 'undefined') {
+            GameAds.showInterstitial({ onComplete: () => {
+                this.showScreen('gameOver');
+                this.updateResumeButton();
+            } });
+        } else {
+            this.showScreen('gameOver');
+            this.updateResumeButton();
+        }
     }
 
     // ========================================================================
@@ -2112,4 +2119,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Daily streak retention
     DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
+
+    if (typeof GameAds !== 'undefined') GameAds.init();
 });
