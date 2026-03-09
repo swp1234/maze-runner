@@ -697,6 +697,7 @@ class Game {
     // Game Flow
     // ========================================================================
     startGame() {
+        if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameOverScreen');
         this.clearGameState();
         this.stage = 1;
         this.totalScore = 0;
@@ -1959,10 +1960,30 @@ class Game {
             GameAds.showInterstitial({ onComplete: () => {
                 this.showScreen('gameOver');
                 this.updateResumeButton();
+                this.injectRewardButton();
             } });
         } else {
             this.showScreen('gameOver');
             this.updateResumeButton();
+            this.injectRewardButton();
+        }
+    }
+
+    injectRewardButton() {
+        if (typeof GameAds !== 'undefined') {
+            GameAds.injectRewardButton({
+                container: '#gameOverScreen',
+                label: 'Watch Ad for Extra Life',
+                onReward: () => {
+                    // Continue from current stage
+                    GameAds.removeRewardButton('#gameOverScreen');
+                    this.initLevel();
+                    this.showScreen('game');
+                    this.startGameLoop();
+                    if (typeof gtag === 'function')
+                        gtag('event', 'rewarded_ad', { event_category: 'maze_runner', type: 'extra_life', stage: this.stage });
+                }
+            });
         }
     }
 
