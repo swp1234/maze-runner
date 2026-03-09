@@ -1850,6 +1850,9 @@ class Game {
         }
         this.displayBestRecords();
 
+        // Daily streak report
+        if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.stage);
+
         // Play sound
         if (this.sfx && this.sfx.gameOver) {
             try { this.sfx.gameOver(); } catch (e) { /* ignore */ }
@@ -2009,4 +2012,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Create and start game
     const game = new Game();
+
+    // Daily streak retention
+    DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
 });
