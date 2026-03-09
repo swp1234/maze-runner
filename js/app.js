@@ -1005,6 +1005,7 @@ class Game {
 
             if (dist < 0.5) {
                 item.collected = true;
+                if (typeof Haptic !== 'undefined') Haptic.light();
 
                 // Screen coordinates for particles
                 const screenX = this.renderOffsetX + item.x * this.renderScale;
@@ -1793,6 +1794,7 @@ class Game {
         if (this.sfx && this.sfx.levelUp) {
             try { this.sfx.levelUp(); } catch (e) { /* ignore */ }
         }
+        if (typeof Haptic !== 'undefined') Haptic.success();
 
         // Show screen
         this.showScreen('levelComplete');
@@ -1857,6 +1859,7 @@ class Game {
         if (this.sfx && this.sfx.gameOver) {
             try { this.sfx.gameOver(); } catch (e) { /* ignore */ }
         }
+        if (typeof Haptic !== 'undefined') Haptic.heavy();
 
         // Show screen
         this.showScreen('gameOver');

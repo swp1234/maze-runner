@@ -288,6 +288,7 @@
     <script src="./js/error-handler.js"></script>
     <script src="./js/i18n.js"></script>
     <script src="./js/sound-engine.js"></script>
+    <script src="/_common/js/haptic.js"></script>
     <script src="/_common/js/daily-streak.js"></script>
     <script src="./js/app.js"></script>
     <div id="share-float" style="position:fixed;bottom:80px;right:16px;z-index:99"><button onclick="(async()=>{const u=location.href,t=document.title;if(typeof gtag==='function')gtag('event','share',{method:navigator.share?'native':'clipboard',app_name:'maze-runner'});if(navigator.share){try{await navigator.share({title:t,url:u})}catch(e){}}else{await navigator.clipboard.writeText(u);this.textContent='✅';setTimeout(()=>this.textContent='📤',1500)}})()" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;backdrop-filter:blur(8px)">📤</button></div>
