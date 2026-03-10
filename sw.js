@@ -1,7 +1,9 @@
-const CACHE_NAME = 'maze-runner-v2';
+const CACHE_NAME = 'maze-runner-v3';
 const ASSETS = [
     './index.html',
     './css/style.css',
+    './assets/player-opt.png',
+    './assets/goal-opt.png',
     './js/app.js',
     './js/i18n.js',
     './js/locales/ko.json',
