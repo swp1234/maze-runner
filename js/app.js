@@ -13,6 +13,25 @@ if (themeToggle) {
     });
 }
 
+// ============================================================================
+// Confetti Celebration
+// ============================================================================
+function spawnConfetti() {
+    const colors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd'];
+    for (let i = 0; i < 50; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = `position:fixed;top:-10px;left:${Math.random()*100}%;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'0'};z-index:99999;pointer-events:none;animation:confettiFall ${1.5+Math.random()*2}s linear forwards`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+    }
+    if (!document.getElementById('confetti-style')) {
+        const s = document.createElement('style');
+        s.id = 'confetti-style';
+        s.textContent = '@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+        document.head.appendChild(s);
+    }
+}
+
 // Maze Runner Game - Full Redesign
 // Canvas-based maze game with fog of war, BFS hints, combo system, particle effects, D-pad
 
@@ -1975,6 +1994,12 @@ class Game {
             } else {
                 newBestBadge.classList.add('hidden');
             }
+        }
+
+        // Confetti celebration on level complete or new best score
+        spawnConfetti();
+        if (isNewBest) {
+            setTimeout(() => spawnConfetti(), 800);
         }
 
         // Save progress for session persistence (next stage)
