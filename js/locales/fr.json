@@ -61,7 +61,10 @@
     "speedBoost": "Accélération !",
     "timeFrozen": "Temps Gelé !",
     "exitUnlocked": "Sortie déverrouillée !",
-    "trapTriggered": "Piège ! Retour au départ !"
+    "trapTriggered": "Piège ! Retour au départ !",
+    "shieldActive": "Bouclier actif !",
+    "shieldBroken": "Bouclier brisé !",
+    "enemyCaught": "Attrapé ! Retour au début !"
   },
   "control": {
     "sound": "Son"

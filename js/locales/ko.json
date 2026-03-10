@@ -61,7 +61,10 @@
     "speedBoost": "속도 증가!",
     "timeFrozen": "시간 정지!",
     "exitUnlocked": "출구 해제!",
-    "trapTriggered": "함정! 시작점으로!"
+    "trapTriggered": "함정! 시작점으로!",
+    "shieldActive": "방패 활성화!",
+    "shieldBroken": "방패 파괴!",
+    "enemyCaught": "잡혔다! 시작점으로!"
   },
   "control": {
     "sound": "사운드"

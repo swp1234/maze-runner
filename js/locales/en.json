@@ -61,7 +61,10 @@
     "speedBoost": "Speed Boost!",
     "timeFrozen": "Time Frozen!",
     "exitUnlocked": "Exit Unlocked!",
-    "trapTriggered": "Trap! Back to Start!"
+    "trapTriggered": "Trap! Back to Start!",
+    "shieldActive": "Shield Active!",
+    "shieldBroken": "Shield Broken!",
+    "enemyCaught": "Caught! Back to Start!"
   },
   "control": {
     "sound": "Sound"

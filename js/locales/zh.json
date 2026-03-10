@@ -61,7 +61,10 @@
     "speedBoost": "加速中！",
     "timeFrozen": "时间冻结！",
     "exitUnlocked": "出口已解锁！",
-    "trapTriggered": "陷阱！回到起点！"
+    "trapTriggered": "陷阱！回到起点！",
+    "shieldActive": "护盾激活！",
+    "shieldBroken": "护盾破碎！",
+    "enemyCaught": "被抓住了！回到起点！"
   },
   "control": {
     "sound": "音效"

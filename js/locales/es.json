@@ -61,7 +61,10 @@
     "speedBoost": "¡Impulso de Velocidad!",
     "timeFrozen": "¡Tiempo Congelado!",
     "exitUnlocked": "¡Salida desbloqueada!",
-    "trapTriggered": "¡Trampa! ¡Vuelve al inicio!"
+    "trapTriggered": "¡Trampa! ¡Vuelve al inicio!",
+    "shieldActive": "¡Escudo activo!",
+    "shieldBroken": "¡Escudo roto!",
+    "enemyCaught": "¡Atrapado! ¡Vuelve al inicio!"
   },
   "control": {
     "sound": "Sonido"

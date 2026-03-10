@@ -61,7 +61,10 @@
     "speedBoost": "Geschwindigkeitsschub!",
     "timeFrozen": "Zeit eingefroren!",
     "exitUnlocked": "Ausgang freigeschaltet!",
-    "trapTriggered": "Falle! Zurück zum Start!"
+    "trapTriggered": "Falle! Zurück zum Start!",
+    "shieldActive": "Schild aktiv!",
+    "shieldBroken": "Schild zerbrochen!",
+    "enemyCaught": "Erwischt! Zurück zum Start!"
   },
   "control": {
     "sound": "Ton"

@@ -61,7 +61,10 @@
     "speedBoost": "Turbo Ativado!",
     "timeFrozen": "Tempo Congelado!",
     "exitUnlocked": "Saída desbloqueada!",
-    "trapTriggered": "Armadilha! Volta ao início!"
+    "trapTriggered": "Armadilha! Volta ao início!",
+    "shieldActive": "Escudo ativo!",
+    "shieldBroken": "Escudo quebrado!",
+    "enemyCaught": "Pego! De volta ao início!"
   },
   "control": {
     "sound": "Som"

@@ -61,7 +61,10 @@
     "speedBoost": "Ускорение!",
     "timeFrozen": "Время Заморожено!",
     "exitUnlocked": "Выход открыт!",
-    "trapTriggered": "Ловушка! Назад к старту!"
+    "trapTriggered": "Ловушка! Назад к старту!",
+    "shieldActive": "Щит активен!",
+    "shieldBroken": "Щит разрушен!",
+    "enemyCaught": "Пойман! Назад к старту!"
   },
   "control": {
     "sound": "Звук"

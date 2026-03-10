@@ -61,7 +61,10 @@
     "speedBoost": "スピードアップ！",
     "timeFrozen": "タイムフリーズ！",
     "exitUnlocked": "出口解放！",
-    "trapTriggered": "トラップ！スタートに戻る！"
+    "trapTriggered": "トラップ！スタートに戻る！",
+    "shieldActive": "シールド発動！",
+    "shieldBroken": "シールド破壊！",
+    "enemyCaught": "捕まった！スタートに戻る！"
   },
   "control": {
     "sound": "サウンド"

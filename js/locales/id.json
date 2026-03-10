@@ -61,7 +61,10 @@
     "speedBoost": "Percepatan Aktif!",
     "timeFrozen": "Waktu Dibekukan!",
     "exitUnlocked": "Pintu keluar terbuka!",
-    "trapTriggered": "Jebakan! Kembali ke awal!"
+    "trapTriggered": "Jebakan! Kembali ke awal!",
+    "shieldActive": "Perisai aktif!",
+    "shieldBroken": "Perisai hancur!",
+    "enemyCaught": "Tertangkap! Kembali ke awal!"
   },
   "control": {
     "sound": "Suara"

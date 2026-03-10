@@ -61,7 +61,10 @@
     "speedBoost": "Hız Artışı!",
     "timeFrozen": "Zaman Donduruldu!",
     "exitUnlocked": "Çıkış açıldı!",
-    "trapTriggered": "Tuzak! Başa dön!"
+    "trapTriggered": "Tuzak! Başa dön!",
+    "shieldActive": "Kalkan aktif!",
+    "shieldBroken": "Kalkan kırıldı!",
+    "enemyCaught": "Yakalandın! Başa dön!"
   },
   "control": {
     "sound": "Ses"

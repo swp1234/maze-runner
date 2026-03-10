@@ -61,7 +61,10 @@
     "speedBoost": "स्पीड बूस्ट!",
     "timeFrozen": "समय रुका!",
     "exitUnlocked": "निकास खुल गया!",
-    "trapTriggered": "जाल! शुरुआत पर वापस!"
+    "trapTriggered": "जाल! शुरुआत पर वापस!",
+    "shieldActive": "शील्ड सक्रिय!",
+    "shieldBroken": "शील्ड टूट गई!",
+    "enemyCaught": "पकड़ा गया! शुरू में वापस!"
   },
   "control": {
     "sound": "ध्वनि"

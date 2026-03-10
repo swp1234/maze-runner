@@ -355,6 +355,13 @@ class Game {
         this.traps = [];
         this.trapCooldown = 0; // prevent instant re-trigger
 
+        // Patrol enemies
+        this.enemies = [];
+        this.enemyHitCooldown = 0;
+
+        // Shield
+        this.shieldActive = false;
+
         // Gate system: exit locked until all keys collected
         this.exitUnlocked = false;
 
@@ -861,6 +868,13 @@ class Game {
         this.traps = [];
         this.trapCooldown = 0;
 
+        // Enemies
+        this.enemies = [];
+        this.enemyHitCooldown = 0;
+
+        // Shield
+        this.shieldActive = false;
+
         // Particles
         this.particles = new ParticleSystem();
 
@@ -868,6 +882,9 @@ class Game {
         this.keysCollected = 0;
         this.bonusCollected = 0;
         this.generateItems();
+
+        // Spawn patrol enemies (stage 3+)
+        this.spawnEnemies();
 
         // Init camera to player position
         this.camera.x = this.player.x * this.cellSize - window.innerWidth / 2;
@@ -962,6 +979,17 @@ class Game {
             });
         }
 
+        // Shield: stage 5+
+        if (this.stage >= 5) {
+            const cell = pickCell();
+            this.items.push({
+                x: cell.x + 0.5,
+                y: cell.y + 0.5,
+                type: 'shield',
+                collected: false
+            });
+        }
+
         // Trap tiles: stage 2+, warps player back to start
         if (this.stage >= 2) {
             const trapCount = Math.min(2 + Math.floor((this.stage - 2)), 8);
@@ -972,6 +1000,85 @@ class Game {
                     y: cell.y + 0.5,
                     triggered: false
                 });
+            }
+        }
+    }
+
+    // ========================================================================
+    // Patrol Enemies
+    // ========================================================================
+    spawnEnemies() {
+        this.enemies = [];
+        if (this.stage < 3) return;
+
+        const count = Math.min(1 + Math.floor((this.stage - 3) / 2), 5);
+        const openCells = this.maze.getOpenCells();
+        const endX = this.maze.width - 2;
+        const endY = this.maze.height - 2;
+
+        // Valid spawn cells: away from start and end
+        const spawnCells = openCells.filter(c => {
+            const dStart = Math.abs(c.x - 1) + Math.abs(c.y - 1);
+            const dEnd = Math.abs(c.x - endX) + Math.abs(c.y - endY);
+            return dStart > 6 && dEnd > 4;
+        });
+
+        // Shuffle
+        for (let i = spawnCells.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [spawnCells[i], spawnCells[j]] = [spawnCells[j], spawnCells[i]];
+        }
+
+        const speed = 1.2 + this.stage * 0.08; // gets faster each stage
+
+        for (let i = 0; i < count && i < spawnCells.length; i++) {
+            const cell = spawnCells[i];
+            this.enemies.push({
+                x: cell.x + 0.5,
+                y: cell.y + 0.5,
+                speed: speed,
+                targetX: cell.x + 0.5,
+                targetY: cell.y + 0.5,
+                path: [],
+                pathIndex: 0,
+                retargetTimer: 0,
+                color: `hsl(${340 + i * 30}, 80%, 55%)`
+            });
+        }
+    }
+
+    updateEnemy(enemy, dt) {
+        // Retarget periodically or when reached target
+        enemy.retargetTimer -= dt;
+        const atTarget = Math.abs(enemy.x - enemy.targetX) < 0.15 &&
+                          Math.abs(enemy.y - enemy.targetY) < 0.15;
+
+        if (atTarget || enemy.retargetTimer <= 0 || enemy.path.length === 0) {
+            // Pick a new random walkable cell as target
+            const openCells = this.maze.getOpenCells();
+            const target = openCells[Math.floor(Math.random() * openCells.length)];
+            enemy.targetX = target.x + 0.5;
+            enemy.targetY = target.y + 0.5;
+
+            // BFS path to target
+            enemy.path = this.maze.solvePath(enemy.x, enemy.y, enemy.targetX, enemy.targetY);
+            enemy.pathIndex = 0;
+            enemy.retargetTimer = 8 + Math.random() * 4;
+        }
+
+        // Follow path
+        if (enemy.path.length > 0 && enemy.pathIndex < enemy.path.length) {
+            const waypoint = enemy.path[enemy.pathIndex];
+            const dx = waypoint.x - enemy.x;
+            const dy = waypoint.y - enemy.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 0.15) {
+                enemy.pathIndex++;
+            } else {
+                const moveSpeed = enemy.speed * dt;
+                enemy.x += (dx / dist) * Math.min(moveSpeed, dist);
+                enemy.y += (dy / dist) * Math.min(moveSpeed, dist);
             }
         }
     }
@@ -1226,6 +1333,16 @@ class Game {
                         this.showToast('timeFrozen');
                         break;
                     }
+                    case 'shield': {
+                        this.shieldActive = true;
+                        if (this.sfx && this.sfx.powerUp) {
+                            try { this.sfx.powerUp(); } catch (e) { /* ignore */ }
+                        }
+                        this.particles.addSparkles(screenX, screenY, '#2ecc71', 8);
+                        this.particles.addFloatingText('SHIELD!', screenX, screenY - 10, '#2ecc71');
+                        this.showToast('shieldActive');
+                        break;
+                    }
                 }
 
                 // Update fog radius on key collect (grows from shrunken base)
@@ -1253,23 +1370,87 @@ class Game {
                 const ty = this.player.y - trap.y;
                 const tDist = Math.sqrt(tx * tx + ty * ty);
                 if (tDist < 0.45) {
-                    // Warp back to start
-                    this.player.x = 1.5;
-                    this.player.y = 1.5;
-                    this.player.trail = [];
-                    this.trapCooldown = 1.5; // immunity after warp
-                    this.showToast('trapTriggered');
-                    if (this.sfx && this.sfx.hit) {
-                        try { this.sfx.hit(); } catch (e) { /* ignore */ }
-                    }
-                    // Penalty: lose 3 seconds in timer mode
-                    if (this.gameMode === 'timer') {
-                        this.timeLeft -= 3000;
-                    }
                     const screenTX = this.renderOffsetX + trap.x * this.renderScale;
                     const screenTY = this.renderOffsetY + trap.y * this.renderScale;
-                    this.particles.addSparkles(screenTX, screenTY, '#e74c3c', 10);
-                    this.particles.addFloatingText('TRAP!', screenTX, screenTY - 10, '#e74c3c');
+
+                    if (this.shieldActive) {
+                        // Shield absorbs the trap
+                        this.shieldActive = false;
+                        this.trapCooldown = 0.5;
+                        this.showToast('shieldBroken');
+                        if (this.sfx && this.sfx.hit) {
+                            try { this.sfx.hit(); } catch (e) { /* ignore */ }
+                        }
+                        this.particles.addSparkles(screenTX, screenTY, '#2ecc71', 10);
+                        this.particles.addFloatingText('BLOCKED!', screenTX, screenTY - 10, '#2ecc71');
+                        if (typeof Haptic !== 'undefined') Haptic.medium();
+                    } else {
+                        // Warp back to start
+                        this.player.x = 1.5;
+                        this.player.y = 1.5;
+                        this.player.trail = [];
+                        this.trapCooldown = 1.5; // immunity after warp
+                        this.showToast('trapTriggered');
+                        if (this.sfx && this.sfx.hit) {
+                            try { this.sfx.hit(); } catch (e) { /* ignore */ }
+                        }
+                        // Penalty: lose 3 seconds in timer mode
+                        if (this.gameMode === 'timer') {
+                            this.timeLeft -= 3000;
+                        }
+                        this.particles.addSparkles(screenTX, screenTY, '#e74c3c', 10);
+                        this.particles.addFloatingText('TRAP!', screenTX, screenTY - 10, '#e74c3c');
+                        if (typeof Haptic !== 'undefined') Haptic.heavy();
+                        this.shakeCanvas();
+                    }
+                    break;
+                }
+            }
+        }
+
+        // ---- Enemy update & collision ----
+        if (this.enemyHitCooldown > 0) {
+            this.enemyHitCooldown -= dt;
+        }
+        for (const enemy of this.enemies) {
+            this.updateEnemy(enemy, dt);
+
+            // Collision with player
+            if (this.enemyHitCooldown <= 0) {
+                const edx = this.player.x - enemy.x;
+                const edy = this.player.y - enemy.y;
+                const eDist = Math.sqrt(edx * edx + edy * edy);
+                if (eDist < 0.55) {
+                    const screenEX = this.renderOffsetX + enemy.x * this.renderScale;
+                    const screenEY = this.renderOffsetY + enemy.y * this.renderScale;
+
+                    if (this.shieldActive) {
+                        this.shieldActive = false;
+                        this.enemyHitCooldown = 0.5;
+                        this.showToast('shieldBroken');
+                        if (this.sfx && this.sfx.hit) {
+                            try { this.sfx.hit(); } catch (e) { /* ignore */ }
+                        }
+                        this.particles.addSparkles(screenEX, screenEY, '#2ecc71', 10);
+                        this.particles.addFloatingText('BLOCKED!', screenEX, screenEY - 10, '#2ecc71');
+                        if (typeof Haptic !== 'undefined') Haptic.medium();
+                    } else {
+                        this.player.x = 1.5;
+                        this.player.y = 1.5;
+                        this.player.trail = [];
+                        this.enemyHitCooldown = 1.5;
+                        this.showToast('enemyCaught');
+                        if (this.sfx && this.sfx.hit) {
+                            try { this.sfx.hit(); } catch (e) { /* ignore */ }
+                        }
+                        if (this.gameMode === 'timer') {
+                            this.timeLeft -= 5000;
+                        }
+                        this.particles.addSparkles(screenEX, screenEY, '#e74c3c', 12);
+                        this.particles.addFloatingText('CAUGHT!', screenEX, screenEY - 10, '#e74c3c');
+                        if (typeof Haptic !== 'undefined') Haptic.heavy();
+                        this.shakeCanvas();
+                    }
                     break;
                 }
             }
@@ -1355,6 +1536,7 @@ class Game {
             // FOG MODE: Draw scene, then apply radial mask
             this.drawMaze(ctx, offsetX, offsetY, scale);
             this.drawTraps(ctx, offsetX, offsetY, scale);
+            this.drawEnemies(ctx, offsetX, offsetY, scale);
             this.drawItems(ctx, offsetX, offsetY, scale);
             this.drawExit(ctx, offsetX, offsetY, scale);
             this.drawTrail(ctx, offsetX, offsetY, scale);
@@ -1381,6 +1563,7 @@ class Game {
             // Normal / Timer mode: draw everything normally
             this.drawMaze(ctx, offsetX, offsetY, scale);
             this.drawTraps(ctx, offsetX, offsetY, scale);
+            this.drawEnemies(ctx, offsetX, offsetY, scale);
             this.drawItems(ctx, offsetX, offsetY, scale);
             this.drawExit(ctx, offsetX, offsetY, scale);
             this.drawTrail(ctx, offsetX, offsetY, scale);
@@ -1522,6 +1705,22 @@ class Game {
             ctx.setLineDash([]);
         }
 
+        // Shield indicator
+        if (this.shieldActive) {
+            const shieldPulse = Math.sin(Date.now() / 400) * 0.2 + 0.6;
+            ctx.strokeStyle = `rgba(46, 204, 113, ${shieldPulse})`;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.arc(px, py, size + 10, 0, Math.PI * 2);
+            ctx.stroke();
+            // Inner glow
+            ctx.strokeStyle = `rgba(46, 204, 113, ${shieldPulse * 0.3})`;
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(px, py, size + 8, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
         ctx.restore();
     }
 
@@ -1590,6 +1789,12 @@ class Game {
                     strokeColor = 'rgba(155, 89, 182, 0.5)';
                     glowColor = '#9b59b6';
                     emoji = '🧊';
+                    break;
+                case 'shield':
+                    fillColor = '#2ecc71';
+                    strokeColor = 'rgba(46, 204, 113, 0.5)';
+                    glowColor = '#2ecc71';
+                    emoji = '🛡️';
                     break;
                 default:
                     fillColor = '#fff';
@@ -1773,6 +1978,68 @@ class Game {
         }
     }
 
+    drawEnemies(ctx, ox, oy, scale) {
+        const now = Date.now();
+        for (const enemy of this.enemies) {
+            const px = ox + enemy.x * scale;
+            const py = oy + enemy.y * scale;
+            const size = scale * 0.32;
+
+            // Bobbing animation
+            const bob = Math.sin(now / 300 + enemy.x * 5) * 2;
+
+            ctx.save();
+
+            // Outer glow
+            ctx.shadowColor = enemy.color;
+            ctx.shadowBlur = 12 + Math.sin(now / 200) * 4;
+
+            // Ghost body
+            ctx.fillStyle = enemy.color;
+            ctx.globalAlpha = 0.75 + Math.sin(now / 500) * 0.15;
+            ctx.beginPath();
+            ctx.arc(px, py + bob - size * 0.2, size, Math.PI, 0);
+            // Wavy bottom
+            ctx.lineTo(px + size, py + bob + size * 0.5);
+            const waves = 4;
+            for (let i = waves; i >= 0; i--) {
+                const wx = px + size - (i / waves) * size * 2;
+                const waveY = py + bob + size * 0.5 + (i % 2 === 0 ? size * 0.2 : 0);
+                ctx.lineTo(wx, waveY);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+
+            // Eyes
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(px - size * 0.25, py + bob - size * 0.3, size * 0.18, 0, Math.PI * 2);
+            ctx.arc(px + size * 0.25, py + bob - size * 0.3, size * 0.18, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pupils (look toward player)
+            const dx = this.player.x - enemy.x;
+            const dy = this.player.y - enemy.y;
+            const angle = Math.atan2(dy, dx);
+            const pupilOff = size * 0.08;
+            ctx.fillStyle = '#1a1a2e';
+            ctx.beginPath();
+            ctx.arc(px - size * 0.25 + Math.cos(angle) * pupilOff,
+                    py + bob - size * 0.3 + Math.sin(angle) * pupilOff,
+                    size * 0.09, 0, Math.PI * 2);
+            ctx.arc(px + size * 0.25 + Math.cos(angle) * pupilOff,
+                    py + bob - size * 0.3 + Math.sin(angle) * pupilOff,
+                    size * 0.09, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+    }
+
     drawHint(ctx, ox, oy, scale) {
         if (!this.hintPath || this.hintPath.length < 2) return;
 
@@ -1850,6 +2117,7 @@ class Game {
                 case 'bonus': mctx.fillStyle = '#e74c3c'; break;
                 case 'speedBoost': mctx.fillStyle = '#3498db'; break;
                 case 'timeFreezer': mctx.fillStyle = '#9b59b6'; break;
+                case 'shield': mctx.fillStyle = '#2ecc71'; break;
                 default: mctx.fillStyle = '#fff';
             }
             mctx.beginPath();
@@ -1868,6 +2136,20 @@ class Game {
             mctx.fillStyle = '#e74c3c';
             mctx.beginPath();
             mctx.arc(tpx, tpy, Math.max(1.5, cellSize * 0.3), 0, Math.PI * 2);
+            mctx.fill();
+        }
+
+        // Draw enemies on minimap
+        for (const enemy of this.enemies) {
+            if (this.gameMode === 'fog') {
+                const cellKey = `${Math.floor(enemy.x)},${Math.floor(enemy.y)}`;
+                if (!this.exploredCells.has(cellKey)) continue;
+            }
+            const epx = mapOffX + enemy.x * cellSize;
+            const epy = mapOffY + enemy.y * cellSize;
+            mctx.fillStyle = '#ff4757';
+            mctx.beginPath();
+            mctx.arc(epx, epy, Math.max(1.5, cellSize * 0.4), 0, Math.PI * 2);
             mctx.fill();
         }
 
@@ -2141,7 +2423,10 @@ class Game {
             'timeFrozen': 'Time Frozen!',
             'comboX': 'Combo x' + this.comboCount + '!',
             'exitUnlocked': '🔓 Exit Unlocked!',
-            'trapTriggered': '💀 Trap! Back to Start!'
+            'trapTriggered': '💀 Trap! Back to Start!',
+            'shieldActive': '🛡️ Shield Active!',
+            'shieldBroken': '🛡️ Shield Broken!',
+            'enemyCaught': '👻 Caught! Back to Start!'
         };
 
         // Try i18n first
