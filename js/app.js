@@ -728,6 +728,17 @@ class Game {
         this.currentScreen = name;
     }
 
+    shakeCanvas() {
+        const c = document.getElementById('gameCanvas');
+        if (!c) return;
+        c.style.transition = 'none';
+        c.style.transform = 'translateX(-4px)';
+        setTimeout(() => { c.style.transform = 'translateX(4px)'; }, 50);
+        setTimeout(() => { c.style.transform = 'translateX(-2px)'; }, 100);
+        setTimeout(() => { c.style.transform = 'translateX(2px)'; }, 150);
+        setTimeout(() => { c.style.transform = ''; }, 200);
+    }
+
     // ========================================================================
     // Game Flow
     // ========================================================================
@@ -1971,10 +1982,11 @@ class Game {
         this.saveGameState();
         this.stage--;
 
-        // Play sound
+        // Play sound + screen shake
         if (this.sfx && this.sfx.levelUp) {
             try { this.sfx.levelUp(); } catch (e) { /* ignore */ }
         }
+        this.shakeCanvas();
         if (typeof Haptic !== 'undefined') Haptic.success();
 
         // Show screen
@@ -2039,10 +2051,11 @@ class Game {
         // Daily streak report
         if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.stage);
 
-        // Play sound
+        // Play sound + shake
         if (this.sfx && this.sfx.gameOver) {
             try { this.sfx.gameOver(); } catch (e) { /* ignore */ }
         }
+        this.shakeCanvas();
         if (typeof Haptic !== 'undefined') Haptic.heavy();
 
         // Show screen
