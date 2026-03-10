@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maze-runner-v4';
+const CACHE_NAME = 'maze-runner-v5';
 const ASSETS = [
     './index.html',
     './css/style.css',
