@@ -2139,7 +2139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const game = new Game();
 
     // Daily streak retention
-    DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
+    if (typeof DailyStreak !== 'undefined') DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
 
     if (typeof GameAds !== 'undefined') GameAds.init();
 });
