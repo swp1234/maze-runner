@@ -489,6 +489,27 @@ class Game {
             retryBtn.addEventListener('click', () => this.startGame());
         }
 
+        // ---- Share score ----
+        const shareScoreBtn = document.getElementById('share-score-btn');
+        if (shareScoreBtn) {
+            shareScoreBtn.addEventListener('click', () => {
+                const stage = this.stage || 0;
+                const score = this.totalScore || 0;
+                const text = `I reached stage ${stage} with ${score} points in Maze Runner! Can you beat me? \uD83C\uDFC3`;
+                const url = 'https://dopabrain.com/maze-runner/';
+                if (navigator.share) {
+                    navigator.share({ title: 'Maze Runner', text, url }).catch(() => {});
+                } else {
+                    navigator.clipboard.writeText(text + '\n' + url).then(() => {
+                        const orig = shareScoreBtn.textContent;
+                        shareScoreBtn.textContent = 'Copied!';
+                        setTimeout(() => shareScoreBtn.textContent = orig, 1500);
+                    }).catch(() => {});
+                }
+                if (typeof gtag === 'function') gtag('event', 'share', { method: navigator.share ? 'native' : 'clipboard', app_name: 'maze-runner' });
+            });
+        }
+
         // ---- Menu buttons ----
         const menuBtnComplete = document.getElementById('menuBtnComplete');
         if (menuBtnComplete) {

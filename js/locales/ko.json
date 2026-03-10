@@ -27,7 +27,8 @@
     "bonus": "보너스",
     "combo": "콤보",
     "hint": "힌트",
-    "minimap": "지도"
+    "minimap": "지도",
+    "shareScore": "점수 공유"
   },
   "items": {
     "key": "열쇠",

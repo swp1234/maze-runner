@@ -27,7 +27,8 @@
     "bonus": "Bonus",
     "combo": "Kombo",
     "hint": "Petunjuk",
-    "minimap": "Peta"
+    "minimap": "Peta",
+    "shareScore": "Bagikan Skor"
   },
   "items": {
     "key": "Kunci",

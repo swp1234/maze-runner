@@ -27,7 +27,8 @@
     "bonus": "ボーナス",
     "combo": "コンボ",
     "hint": "ヒント",
-    "minimap": "マップ"
+    "minimap": "マップ",
+    "shareScore": "スコア共有"
   },
   "items": {
     "key": "カギ",

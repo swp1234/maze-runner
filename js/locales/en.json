@@ -27,7 +27,8 @@
     "bonus": "Bonus",
     "combo": "Combo",
     "hint": "Hint",
-    "minimap": "Map"
+    "minimap": "Map",
+    "shareScore": "Share Score"
   },
   "items": {
     "key": "Key",

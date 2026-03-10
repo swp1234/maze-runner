@@ -27,7 +27,8 @@
     "bonus": "Bonus",
     "combo": "Combo",
     "hint": "Pista",
-    "minimap": "Mapa"
+    "minimap": "Mapa",
+    "shareScore": "Compartir"
   },
   "items": {
     "key": "Llave",

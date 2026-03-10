@@ -27,7 +27,8 @@
     "bonus": "Bonus",
     "combo": "Combo",
     "hint": "Indice",
-    "minimap": "Carte"
+    "minimap": "Carte",
+    "shareScore": "Partager"
   },
   "items": {
     "key": "Clé",

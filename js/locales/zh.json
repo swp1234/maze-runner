@@ -27,7 +27,8 @@
     "bonus": "奖励",
     "combo": "连击",
     "hint": "提示",
-    "minimap": "地图"
+    "minimap": "地图",
+    "shareScore": "分享分数"
   },
   "items": {
     "key": "钥匙",

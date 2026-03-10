@@ -27,7 +27,8 @@
     "bonus": "Бонус",
     "combo": "Комбо",
     "hint": "Подсказка",
-    "minimap": "Карта"
+    "minimap": "Карта",
+    "shareScore": "Поделиться"
   },
   "items": {
     "key": "Ключ",

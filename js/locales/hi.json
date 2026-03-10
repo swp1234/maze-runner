@@ -27,7 +27,8 @@
     "bonus": "बोनस",
     "combo": "कॉम्बो",
     "hint": "संकेत",
-    "minimap": "नक्शा"
+    "minimap": "नक्शा",
+    "shareScore": "स्कोर शेयर"
   },
   "items": {
     "key": "चाबी",

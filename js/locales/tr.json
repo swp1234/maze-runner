@@ -27,7 +27,8 @@
     "bonus": "Bonus",
     "combo": "Kombo",
     "hint": "İpucu",
-    "minimap": "Harita"
+    "minimap": "Harita",
+    "shareScore": "Puanı Paylaş"
   },
   "items": {
     "key": "Anahtar",
