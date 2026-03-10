@@ -372,6 +372,7 @@ class Game {
         // Best records
         this.bestStage = parseInt(localStorage.getItem('maze_bestStage') || '0');
         this.bestScore = parseInt(localStorage.getItem('maze_bestScore') || '0');
+        this.totalGames = parseInt(localStorage.getItem('maze_totalGames') || '0');
 
         // Animation
         this.lastFrameTime = 0;
@@ -766,6 +767,8 @@ class Game {
         this.clearGameState();
         this.stage = 1;
         this.totalScore = 0;
+        this.totalGames++;
+        localStorage.setItem('maze_totalGames', this.totalGames.toString());
         this.initLevel();
         this.showScreen('game');
         this.startGameLoop();
@@ -2076,6 +2079,13 @@ class Game {
         // Daily streak report
         if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.stage);
 
+        // GameAchievements report
+        if (typeof GameAchievements !== 'undefined') GameAchievements.report({
+            bestScore: this.bestScore,
+            totalGames: this.totalGames,
+            bestStage: this.bestStage
+        });
+
         // Play sound + shake
         if (this.sfx && this.sfx.gameOver) {
             try { this.sfx.gameOver(); } catch (e) { /* ignore */ }
@@ -2268,6 +2278,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Daily streak retention
     if (typeof DailyStreak !== 'undefined') DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
+
+    // GameAchievements integration
+    if (typeof GameAchievements !== 'undefined') GameAchievements.init({
+        gameId: 'maze-runner',
+        defs: [
+            { id: 'score_500', stat: 'bestScore', target: 500, icon: '⭐', name: 'Maze Explorer' },
+            { id: 'score_2000', stat: 'bestScore', target: 2000, icon: '🏆', name: 'Maze Master' },
+            { id: 'score_5000', stat: 'bestScore', target: 5000, icon: '👑', name: 'Maze Legend' },
+            { id: 'games_10', stat: 'totalGames', target: 10, icon: '🎮', name: 'Regular Player' },
+            { id: 'stage_5', stat: 'bestStage', target: 5, icon: '🔥', name: 'Deep Explorer' },
+            { id: 'stage_10', stat: 'bestStage', target: 10, icon: '💎', name: 'Maze Champion' }
+        ]
+    });
 
     if (typeof GameAds !== 'undefined') GameAds.init();
 });
