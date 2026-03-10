@@ -17,6 +17,20 @@ if (themeToggle) {
 // Canvas-based maze game with fog of war, BFS hints, combo system, particle effects, D-pad
 
 // ============================================================================
+// Image Preloading
+// ============================================================================
+const GameSprites = {
+    player: { img: new Image(), loaded: false },
+    goal: { img: new Image(), loaded: false }
+};
+GameSprites.player.img.onload = () => { GameSprites.player.loaded = true; };
+GameSprites.player.img.onerror = () => { GameSprites.player.loaded = false; };
+GameSprites.player.img.src = 'assets/player-opt.png';
+GameSprites.goal.img.onload = () => { GameSprites.goal.loaded = true; };
+GameSprites.goal.img.onerror = () => { GameSprites.goal.loaded = false; };
+GameSprites.goal.img.src = 'assets/goal-opt.png';
+
+// ============================================================================
 // MazeGenerator: Recursive backtracking + BFS pathfinding + open cell listing
 // ============================================================================
 class MazeGenerator {
@@ -1403,23 +1417,34 @@ class Game {
 
         ctx.save();
 
-        // Glow
-        ctx.shadowColor = '#1abc9c';
-        ctx.shadowBlur = 15;
-
-        // Fill
-        ctx.fillStyle = '#48dbfb';
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Stroke
-        ctx.strokeStyle = '#1abc9c';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
+        if (GameSprites.player.loaded) {
+            // Sprite rendering
+            const spriteSize = scale * 0.85;
+            ctx.shadowColor = '#1abc9c';
+            ctx.shadowBlur = 12;
+            ctx.drawImage(
+                GameSprites.player.img,
+                px - spriteSize / 2,
+                py - spriteSize / 2,
+                spriteSize,
+                spriteSize
+            );
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+        } else {
+            // Fallback: original circle rendering
+            ctx.shadowColor = '#1abc9c';
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = '#48dbfb';
+            ctx.beginPath();
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#1abc9c';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+        }
 
         // Speed boost indicator
         if (this.speedBoostTimer > 0) {
@@ -1560,57 +1585,101 @@ class Game {
         ctx.save();
 
         if (this.exitUnlocked) {
-            // UNLOCKED: bright green glow
-            ctx.shadowColor = '#2ecc71';
-            ctx.shadowBlur = 25;
-            ctx.fillStyle = '#2ecc71';
-            ctx.beginPath();
-            ctx.arc(px, py, size, 0, Math.PI * 2);
-            ctx.fill();
+            if (GameSprites.goal.loaded) {
+                // Sprite rendering with pulse/glow animation
+                const spriteSize = scale * 0.9 * pulse;
+                const glowIntensity = Math.sin(Date.now() / 300) * 10 + 20;
+                ctx.shadowColor = '#2ecc71';
+                ctx.shadowBlur = glowIntensity;
+                ctx.drawImage(
+                    GameSprites.goal.img,
+                    px - spriteSize / 2,
+                    py - spriteSize / 2,
+                    spriteSize,
+                    spriteSize
+                );
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+            } else {
+                // Fallback: original unlocked rendering
+                ctx.shadowColor = '#2ecc71';
+                ctx.shadowBlur = 25;
+                ctx.fillStyle = '#2ecc71';
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.fill();
 
-            ctx.strokeStyle = 'rgba(46, 204, 113, 0.5)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(px, py, size + 4, 0, Math.PI * 2);
-            ctx.stroke();
+                ctx.strokeStyle = 'rgba(46, 204, 113, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(px, py, size + 4, 0, Math.PI * 2);
+                ctx.stroke();
 
-            ctx.shadowColor = 'transparent';
-            ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
 
-            const fontSize = Math.max(10, Math.floor(scale * 0.4));
-            ctx.font = `${fontSize}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('🚪', px, py);
+                const fontSize = Math.max(10, Math.floor(scale * 0.4));
+                ctx.font = `${fontSize}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🚪', px, py);
+            }
         } else {
-            // LOCKED: dim red, locked icon
-            ctx.shadowColor = '#e74c3c';
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = 'rgba(231, 76, 60, 0.4)';
-            ctx.beginPath();
-            ctx.arc(px, py, size, 0, Math.PI * 2);
-            ctx.fill();
+            if (GameSprites.goal.loaded) {
+                // Sprite rendering dimmed + locked overlay
+                const spriteSize = scale * 0.9 * pulse;
+                ctx.globalAlpha = 0.35;
+                ctx.shadowColor = '#e74c3c';
+                ctx.shadowBlur = 10;
+                ctx.drawImage(
+                    GameSprites.goal.img,
+                    px - spriteSize / 2,
+                    py - spriteSize / 2,
+                    spriteSize,
+                    spriteSize
+                );
+                ctx.globalAlpha = 1.0;
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
 
-            ctx.strokeStyle = 'rgba(231, 76, 60, 0.6)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(px, py, size + 4, 0, Math.PI * 2);
-            ctx.stroke();
+                // Lock icon overlay
+                const fontSize = Math.max(10, Math.floor(scale * 0.4));
+                ctx.font = `${fontSize}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🔒', px, py);
+            } else {
+                // Fallback: original locked rendering
+                ctx.shadowColor = '#e74c3c';
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = 'rgba(231, 76, 60, 0.4)';
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.fill();
 
-            ctx.shadowColor = 'transparent';
-            ctx.shadowBlur = 0;
+                ctx.strokeStyle = 'rgba(231, 76, 60, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(px, py, size + 4, 0, Math.PI * 2);
+                ctx.stroke();
 
-            const fontSize = Math.max(10, Math.floor(scale * 0.4));
-            ctx.font = `${fontSize}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('🔒', px, py);
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+
+                const fontSize = Math.max(10, Math.floor(scale * 0.4));
+                ctx.font = `${fontSize}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🔒', px, py);
+            }
 
             // Show remaining keys needed
             const remaining = this.totalKeys - this.keysCollected;
             if (remaining > 0) {
                 ctx.fillStyle = '#e74c3c';
                 ctx.font = `bold ${Math.max(8, Math.floor(scale * 0.25))}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
                 ctx.fillText(`🔑x${remaining}`, px, py + size + 8);
             }
         }
