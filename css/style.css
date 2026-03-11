@@ -259,6 +259,17 @@ body {
     pointer-events: auto;
 }
 
+/* Background image overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: url('../assets/bg-opt.png') center / cover no-repeat;
+    opacity: 0.12;
+    pointer-events: none;
+}
+
 /* Background for non-game screens */
 #startScreen,
 #levelCompleteScreen,
