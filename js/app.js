@@ -1596,8 +1596,18 @@ class Game {
                 const py = oy + y * scale;
 
                 if (this.maze.isWall(x, y)) {
-                    ctx.fillStyle = '#12122a';
+                    // Stone wall with subtle variation
+                    const hash = (x * 7 + y * 13) & 15;
+                    const shade = 18 + (hash & 7);
+                    ctx.fillStyle = `rgb(${shade},${shade},${shade + 20})`;
                     ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
+
+                    // Brick-like inner border (every other cell)
+                    if ((x + y) & 1) {
+                        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+                        ctx.fillRect(px + 1, py + 1, scale - 1.5, 1);
+                        ctx.fillRect(px + 1, py + 1, 1, scale - 1.5);
+                    }
                 } else {
                     ctx.fillStyle = '#0a0a1a';
                     ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
