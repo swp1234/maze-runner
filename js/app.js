@@ -405,6 +405,11 @@ class Game {
         // Explored cells for fog minimap
         this.exploredCells = new Set();
 
+        // Fog of War overlay (independent toggle, works in all modes)
+        this.fogOfWarEnabled = localStorage.getItem('maze_fogOfWar') !== 'off'; // default ON
+        this.visitedCells = new Set(); // cells player has been near — stay dimly visible
+        this.fowRadius = 3; // visibility radius in cells
+
         this.init();
     }
 
@@ -645,6 +650,13 @@ class Game {
             minimapBtn.addEventListener('click', () => this.toggleMinimap());
         }
 
+        // Fog of War toggle
+        const fogToggleBtn = document.getElementById('fog-toggle-btn');
+        if (fogToggleBtn) {
+            fogToggleBtn.classList.toggle('active', this.fogOfWarEnabled);
+            fogToggleBtn.addEventListener('click', () => this.toggleFogOfWar());
+        }
+
         // ---- Canvas touch (swipe controls as backup) ----
         this.canvas.addEventListener('touchstart', (e) => {
             // Ignore if touch is in D-pad area
@@ -860,6 +872,9 @@ class Game {
         this.fogRadius = Math.max(3.0, 5.0 - (this.stage - 1) * 0.25);
         this.baseFogRadius = this.fogRadius;
         this.exploredCells = new Set();
+
+        // Reset visited cells for fog of war overlay
+        this.visitedCells = new Set();
 
         // Exit gate: locked until all keys collected
         this.exitUnlocked = false;
@@ -1255,6 +1270,23 @@ class Game {
             }
         }
 
+        // ---- Fog of War overlay: track visited cells ----
+        if (this.fogOfWarEnabled) {
+            const px = Math.floor(this.player.x);
+            const py = Math.floor(this.player.y);
+            const vr = Math.ceil(this.fowRadius) + 1;
+            for (let cy = py - vr; cy <= py + vr; cy++) {
+                for (let cx = px - vr; cx <= px + vr; cx++) {
+                    if (cx >= 0 && cx < this.maze.width && cy >= 0 && cy < this.maze.height) {
+                        const dist = Math.sqrt((cx - this.player.x) * (cx - this.player.x) + (cy - this.player.y) * (cy - this.player.y));
+                        if (dist <= this.fowRadius + 1) {
+                            this.visitedCells.add(`${cx},${cy}`);
+                        }
+                    }
+                }
+            }
+        }
+
         // ---- Item collection ----
         for (let i = 0; i < this.items.length; i++) {
             const item = this.items[i];
@@ -1532,7 +1564,11 @@ class Game {
 
         ctx.save();
 
-        if (this.gameMode === 'fog') {
+        // Determine which fog system is active
+        const useFogMode = this.gameMode === 'fog';
+        const useFogOverlay = this.fogOfWarEnabled && !useFogMode; // independent toggle (skip if fog mode already active)
+
+        if (useFogMode) {
             // FOG MODE: Draw scene, then apply radial mask
             this.drawMaze(ctx, offsetX, offsetY, scale);
             this.drawTraps(ctx, offsetX, offsetY, scale);
@@ -1569,6 +1605,11 @@ class Game {
             this.drawTrail(ctx, offsetX, offsetY, scale);
             this.drawPlayer(ctx, offsetX, offsetY, scale);
             if (this.hintTimer > 0) this.drawHint(ctx, offsetX, offsetY, scale);
+
+            // Fog of War overlay (independent toggle)
+            if (useFogOverlay) {
+                this.drawFogOfWar(ctx, offsetX, offsetY, scale, w, h);
+            }
         }
 
         ctx.restore();
@@ -2203,6 +2244,70 @@ class Game {
         if (container) {
             container.classList.toggle('visible', this.minimapVisible);
         }
+    }
+
+    toggleFogOfWar() {
+        this.fogOfWarEnabled = !this.fogOfWarEnabled;
+        try {
+            localStorage.setItem('maze_fogOfWar', this.fogOfWarEnabled ? 'on' : 'off');
+        } catch (e) { /* storage unavailable */ }
+        const btn = document.getElementById('fog-toggle-btn');
+        if (btn) btn.classList.toggle('active', this.fogOfWarEnabled);
+        if (this.sfx && this.sfx.click) {
+            try { this.sfx.click(); } catch (e) { /* ignore */ }
+        }
+    }
+
+    drawFogOfWar(ctx, ox, oy, scale, w, h) {
+        const px = ox + this.player.x * scale;
+        const py = oy + this.player.y * scale;
+        const radius = this.fowRadius * scale;
+
+        // Draw dark overlay on top of the scene
+        ctx.save();
+
+        // First pass: draw visited cells as dimly visible through a semi-transparent overlay
+        // We paint a full dark overlay, then cut out the visited area (dimmed) and player area (clear)
+
+        // Dark overlay covering everything
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(5, 5, 15, 0.92)';
+        ctx.fillRect(0, 0, w, h);
+
+        // Cut out visited cells with partial transparency (dimmed view)
+        ctx.globalCompositeOperation = 'destination-out';
+        const r0 = this.visStartRow, r1 = this.visEndRow;
+        const c0 = this.visStartCol, c1 = this.visEndCol;
+        for (let y = r0; y < r1; y++) {
+            for (let x = c0; x < c1; x++) {
+                if (this.visitedCells.has(`${x},${y}`)) {
+                    const cellX = ox + x * scale;
+                    const cellY = oy + y * scale;
+                    // Check distance from player for smooth transition
+                    const cellCenterX = cellX + scale * 0.5;
+                    const cellCenterY = cellY + scale * 0.5;
+                    const dist = Math.sqrt((cellCenterX - px) * (cellCenterX - px) + (cellCenterY - py) * (cellCenterY - py));
+                    if (dist <= radius * 1.3) {
+                        // Within or near active vision — will be handled by radial gradient
+                        continue;
+                    }
+                    // Visited but outside active vision — show dimly
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+                    ctx.fillRect(cellX, cellY, scale + 0.5, scale + 0.5);
+                }
+            }
+        }
+
+        // Cut out active vision area with feathered radial gradient
+        const gradient = ctx.createRadialGradient(px, py, 0, px, py, radius * 1.3);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.75, 'rgba(255, 255, 255, 0.7)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(px - radius * 1.4, py - radius * 1.4, radius * 2.8, radius * 2.8);
+
+        ctx.restore();
     }
 
     // ========================================================================

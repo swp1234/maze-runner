@@ -28,6 +28,7 @@
     "combo": "Combo",
     "hint": "Hint",
     "minimap": "Map",
+    "fogToggle": "Fog of War",
     "shareScore": "Share Score"
   },
   "items": {

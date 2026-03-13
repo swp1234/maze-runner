@@ -636,6 +636,12 @@ body::before {
     transform: scale(0.9);
 }
 
+.fog-toggle-btn.active {
+    border-color: var(--primary);
+    box-shadow: var(--glow);
+    background: rgba(26, 188, 156, 0.15);
+}
+
 /* =========================
    11. Minimap Container
    ========================= */
@@ -1274,6 +1280,11 @@ a:focus:not(:focus-visible) {
     background: var(--glass-bg);
     border-color: var(--glass-border);
     color: var(--text);
+}
+
+[data-theme="light"] .fog-toggle-btn.active {
+    background: rgba(26, 188, 156, 0.15);
+    border-color: var(--primary);
 }
 
 [data-theme="light"] .minimap-container {

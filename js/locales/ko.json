@@ -28,6 +28,7 @@
     "combo": "콤보",
     "hint": "힌트",
     "minimap": "지도",
+    "fogToggle": "전장의 안개",
     "shareScore": "점수 공유"
   },
   "items": {
