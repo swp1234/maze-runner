@@ -819,6 +819,18 @@ class Game {
         this.startGameLoop();
     }
 
+    // Stage color themes - cycle every 5 stages
+    getStageTheme() {
+        const themes = [
+            { wall: [18, 18, 38], floor: '#0a0a1a', edge: 'rgba(26, 188, 156, 0.12)', accent: '#1abc9c', name: 'emerald' },
+            { wall: [25, 15, 35], floor: '#0e0818', edge: 'rgba(155, 89, 182, 0.14)', accent: '#9b59b6', name: 'amethyst' },
+            { wall: [15, 20, 35], floor: '#060c1a', edge: 'rgba(52, 152, 219, 0.14)', accent: '#3498db', name: 'sapphire' },
+            { wall: [35, 18, 15], floor: '#1a0808', edge: 'rgba(231, 76, 60, 0.12)', accent: '#e74c3c', name: 'ruby' },
+            { wall: [30, 25, 12], floor: '#141008', edge: 'rgba(241, 196, 15, 0.12)', accent: '#f1c40f', name: 'gold' },
+        ];
+        return themes[(Math.floor((this.stage - 1) / 5)) % themes.length];
+    }
+
     initLevel() {
         // Maze sizes: stage 1=21, 2=25, 3=29, 4=33, ... capped at 51. Must be odd.
         let mazeSize = 21 + (this.stage - 1) * 4;
@@ -1523,8 +1535,9 @@ class Game {
         const w = this.canvas.width / this.dpr;
         const h = this.canvas.height / this.dpr;
 
-        // Clear
-        ctx.fillStyle = '#0a0a1a';
+        // Clear with theme color
+        const bgTheme = this.getStageTheme();
+        ctx.fillStyle = bgTheme.floor;
         ctx.fillRect(0, 0, w, h);
 
         if (!this.maze) return;
@@ -1626,6 +1639,7 @@ class Game {
     drawMaze(ctx, ox, oy, scale) {
         const mazeW = this.maze.width;
         const mazeH = this.maze.height;
+        const theme = this.getStageTheme();
 
         // Only draw visible cells (frustum culling)
         const r0 = this.visStartRow, r1 = this.visEndRow;
@@ -1637,10 +1651,10 @@ class Game {
                 const py = oy + y * scale;
 
                 if (this.maze.isWall(x, y)) {
-                    // Stone wall with subtle variation
+                    // Stone wall with subtle variation using theme colors
                     const hash = (x * 7 + y * 13) & 15;
-                    const shade = 18 + (hash & 7);
-                    ctx.fillStyle = `rgb(${shade},${shade},${shade + 20})`;
+                    const v = (hash & 7);
+                    ctx.fillStyle = `rgb(${theme.wall[0] + v},${theme.wall[1] + v},${theme.wall[2] + v})`;
                     ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
 
                     // Brick-like inner border (every other cell)
@@ -1650,14 +1664,14 @@ class Game {
                         ctx.fillRect(px + 1, py + 1, 1, scale - 1.5);
                     }
                 } else {
-                    ctx.fillStyle = '#0a0a1a';
+                    ctx.fillStyle = theme.floor;
                     ctx.fillRect(px, py, scale + 0.5, scale + 0.5);
                 }
             }
         }
 
         // Draw neon edges where wall meets path (visible area only)
-        ctx.strokeStyle = 'rgba(26, 188, 156, 0.12)';
+        ctx.strokeStyle = theme.edge;
         ctx.lineWidth = 1;
 
         for (let y = r0; y < r1; y++) {
@@ -1705,10 +1719,11 @@ class Game {
 
         ctx.save();
 
+        const playerTheme = this.getStageTheme();
         if (GameSprites.player.loaded) {
             // Sprite rendering
             const spriteSize = scale * 0.85;
-            ctx.shadowColor = '#1abc9c';
+            ctx.shadowColor = playerTheme.accent;
             ctx.shadowBlur = 12;
             ctx.drawImage(
                 GameSprites.player.img,
@@ -1721,13 +1736,13 @@ class Game {
             ctx.shadowBlur = 0;
         } else {
             // Fallback: original circle rendering
-            ctx.shadowColor = '#1abc9c';
+            ctx.shadowColor = playerTheme.accent;
             ctx.shadowBlur = 15;
             ctx.fillStyle = '#48dbfb';
             ctx.beginPath();
             ctx.arc(px, py, size, 0, Math.PI * 2);
             ctx.fill();
-            ctx.strokeStyle = '#1abc9c';
+            ctx.strokeStyle = playerTheme.accent;
             ctx.lineWidth = 2;
             ctx.stroke();
             ctx.shadowColor = 'transparent';
@@ -1791,7 +1806,7 @@ class Game {
 
             ctx.save();
             ctx.globalAlpha = alpha;
-            ctx.fillStyle = '#1abc9c';
+            ctx.fillStyle = this.getStageTheme().accent;
             ctx.beginPath();
             ctx.arc(px, py, radius, 0, Math.PI * 2);
             ctx.fill();
@@ -2121,9 +2136,10 @@ class Game {
         const mazeH = this.maze.height;
         const mapSize = 120;
         const cellSize = mapSize / Math.max(mazeW, mazeH);
+        const mmTheme = this.getStageTheme();
 
         // Clear
-        mctx.fillStyle = '#0a0a1a';
+        mctx.fillStyle = mmTheme.floor;
         mctx.fillRect(0, 0, mapSize, mapSize);
 
         // Offset to center if non-square
@@ -2142,9 +2158,10 @@ class Game {
                 const py = mapOffY + y * cellSize;
 
                 if (this.maze.isWall(x, y)) {
-                    mctx.fillStyle = '#1a1a3e';
+                    const wc = mmTheme.wall;
+                    mctx.fillStyle = `rgb(${wc[0]+8},${wc[1]+8},${wc[2]+12})`;
                 } else {
-                    mctx.fillStyle = '#15152a';
+                    mctx.fillStyle = mmTheme.floor;
                 }
                 mctx.fillRect(px, py, cellSize + 0.5, cellSize + 0.5);
             }
