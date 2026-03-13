@@ -29,7 +29,14 @@
     "hint": "Dica",
     "minimap": "Mapa",
     "fogToggle": "Nevoa de Guerra",
-    "shareScore": "Compartilhar"
+    "shareScore": "Compartilhar",
+    "moreGames": "Mais jogos"
+  },
+  "related": {
+    "snakeGame": "Jogo da cobra",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Runner",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Chave",

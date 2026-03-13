@@ -29,7 +29,14 @@
     "hint": "Pista",
     "minimap": "Mapa",
     "fogToggle": "Niebla de Guerra",
-    "shareScore": "Compartir"
+    "shareScore": "Compartir",
+    "moreGames": "Más juegos"
+  },
+  "related": {
+    "snakeGame": "Serpiente",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Runner",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Llave",

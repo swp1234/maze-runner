@@ -29,7 +29,14 @@
     "hint": "Подсказка",
     "minimap": "Карта",
     "fogToggle": "Туман Войны",
-    "shareScore": "Поделиться"
+    "shareScore": "Поделиться",
+    "moreGames": "Другие игры"
+  },
+  "related": {
+    "snakeGame": "Змейка",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Зигзаг раннер",
+    "skyRunner": "Небесный бегун"
   },
   "items": {
     "key": "Ключ",

@@ -29,7 +29,14 @@
     "hint": "Indice",
     "minimap": "Carte",
     "fogToggle": "Brouillard de Guerre",
-    "shareScore": "Partager"
+    "shareScore": "Partager",
+    "moreGames": "Plus de jeux"
+  },
+  "related": {
+    "snakeGame": "Jeu du serpent",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Runner",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Clé",

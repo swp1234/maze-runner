@@ -29,7 +29,14 @@
     "hint": "संकेत",
     "minimap": "नक्शा",
     "fogToggle": "युद्ध का कोहरा",
-    "shareScore": "स्कोर शेयर"
+    "shareScore": "स्कोर शेयर",
+    "moreGames": "और गेम"
+  },
+  "related": {
+    "snakeGame": "स्नेक गेम",
+    "flappyBird": "फ्लैपी बर्ड",
+    "zigzagRunner": "ज़िगज़ैग रनर",
+    "skyRunner": "स्काई रनर"
   },
   "items": {
     "key": "चाबी",

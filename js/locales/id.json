@@ -29,7 +29,14 @@
     "hint": "Petunjuk",
     "minimap": "Peta",
     "fogToggle": "Kabut Perang",
-    "shareScore": "Bagikan Skor"
+    "shareScore": "Bagikan Skor",
+    "moreGames": "Game Lainnya"
+  },
+  "related": {
+    "snakeGame": "Permainan Ular",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Runner",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Kunci",

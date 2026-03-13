@@ -29,7 +29,14 @@
     "hint": "Tipp",
     "minimap": "Karte",
     "fogToggle": "Nebel des Krieges",
-    "shareScore": "Teilen"
+    "shareScore": "Teilen",
+    "moreGames": "Mehr Spiele"
+  },
+  "related": {
+    "snakeGame": "Schlangenspiel",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zickzack-Läufer",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Schlüssel",

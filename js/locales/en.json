@@ -29,7 +29,14 @@
     "hint": "Hint",
     "minimap": "Map",
     "fogToggle": "Fog of War",
-    "shareScore": "Share Score"
+    "shareScore": "Share Score",
+    "moreGames": "More Games"
+  },
+  "related": {
+    "snakeGame": "Snake Game",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Runner",
+    "skyRunner": "Sky Runner"
   },
   "items": {
     "key": "Key",

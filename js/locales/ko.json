@@ -29,7 +29,14 @@
     "hint": "힌트",
     "minimap": "지도",
     "fogToggle": "전장의 안개",
-    "shareScore": "점수 공유"
+    "shareScore": "점수 공유",
+    "moreGames": "더 많은 게임"
+  },
+  "related": {
+    "snakeGame": "스네이크 게임",
+    "flappyBird": "플래피 버드",
+    "zigzagRunner": "지그재그 러너",
+    "skyRunner": "스카이 러너"
   },
   "items": {
     "key": "열쇠",

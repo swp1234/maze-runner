@@ -29,7 +29,14 @@
     "hint": "ヒント",
     "minimap": "マップ",
     "fogToggle": "戦場の霧",
-    "shareScore": "スコア共有"
+    "shareScore": "スコア共有",
+    "moreGames": "もっとゲーム"
+  },
+  "related": {
+    "snakeGame": "スネークゲーム",
+    "flappyBird": "フラッピーバード",
+    "zigzagRunner": "ジグザグランナー",
+    "skyRunner": "スカイランナー"
   },
   "items": {
     "key": "カギ",

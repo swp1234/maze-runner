@@ -29,7 +29,14 @@
     "hint": "İpucu",
     "minimap": "Harita",
     "fogToggle": "Savaş Sisi",
-    "shareScore": "Puanı Paylaş"
+    "shareScore": "Puanı Paylaş",
+    "moreGames": "Daha fazla oyun"
+  },
+  "related": {
+    "snakeGame": "Yılan Oyunu",
+    "flappyBird": "Flappy Bird",
+    "zigzagRunner": "Zigzag Koşucu",
+    "skyRunner": "Gökyüzü Koşucusu"
   },
   "items": {
     "key": "Anahtar",

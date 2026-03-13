@@ -29,7 +29,14 @@
     "hint": "提示",
     "minimap": "地图",
     "fogToggle": "战争迷雾",
-    "shareScore": "分享分数"
+    "shareScore": "分享分数",
+    "moreGames": "更多游戏"
+  },
+  "related": {
+    "snakeGame": "贪吃蛇",
+    "flappyBird": "飞翔的小鸟",
+    "zigzagRunner": "之字形跑者",
+    "skyRunner": "天空跑者"
   },
   "items": {
     "key": "钥匙",
