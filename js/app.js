@@ -1148,8 +1148,12 @@ class Game {
         const dt = Math.min((timestamp - this.lastFrameTime) / 1000, 0.1); // seconds, capped at 100ms
         this.lastFrameTime = timestamp;
 
-        this.update(dt);
-        this.render();
+        try {
+            this.update(dt);
+            this.render();
+        } catch (e) {
+            console.error('Game loop error:', e);
+        }
 
         this.animFrame = requestAnimationFrame((t) => this.gameLoop(t));
     }
