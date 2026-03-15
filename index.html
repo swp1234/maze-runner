@@ -72,6 +72,69 @@
     }
     </script>
 
+    <!-- FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is Maze Runner?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Maze Runner is a free online puzzle game where you navigate procedurally generated mazes, collect keys and bonuses, and escape through increasingly challenging stages. It features 3 game modes: Normal, Fog of War (limited visibility), and Time Attack."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I play Maze Runner?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Use arrow keys, WASD, or the on-screen D-pad to move through the maze. Collect all keys to unlock the exit. Grab bonus items for extra points. Use the hint button to reveal the path and the minimap to see the full maze layout. Build combos by collecting items quickly."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is Maze Runner free to play? Do I need to download it?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, Maze Runner is completely free to play in your web browser. No download or installation is required. Just open the page and start navigating mazes right away."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What tips can help me clear maze stages faster?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Use the minimap to plan your route before moving. Collect keys in an efficient order to minimize backtracking. In Fog of War mode, follow walls systematically. In Time Attack, prioritize keys over bonuses. Save hints for the most complex maze sections."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I play Maze Runner on my phone or tablet?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Maze Runner features a touch-friendly D-pad control for mobile devices. The game is fully responsive and works on smartphones and tablets with any modern browser."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "DopaBrain", "item": "https://dopabrain.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Games", "item": "https://dopabrain.com/portal/games/" },
+            { "@type": "ListItem", "position": 3, "name": "Maze Runner", "item": "https://dopabrain.com/maze-runner/" }
+        ]
+    }
+    </script>
+
     <!-- PWA -->
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
