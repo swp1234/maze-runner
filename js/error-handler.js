@@ -13,8 +13,9 @@ class ErrorHandler {
     setupGlobalErrorHandlers() {
         // Uncaught JavaScript errors
         window.addEventListener('error', (event) => {
+            if (!(event.error instanceof Error)) return;
             this.handleError(
-                event.error || new Error(event.message),
+                event.error,
                 'Uncaught Error'
             );
         });
@@ -47,13 +48,6 @@ class ErrorHandler {
         // UI에 에러 표시
         this.showErrorUI(userMessage, error);
 
-        // 분석용으로 에러 로깅 (선택사항)
-        if (typeof gtag === 'function') {
-            gtag('event', 'exception', {
-                description: `${context}: ${error.message}`,
-                fatal: false
-            });
-        }
     }
 
     // User-friendly error message

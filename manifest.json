@@ -2,8 +2,8 @@
   "name": "Maze Runner - Escape the Maze",
   "short_name": "Maze Runner",
   "description": "Solve random mazes with multiple difficulty levels and game modes. Navigate through procedurally generated mazes, collect items, and compete globally!",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/maze-runner/",
+  "scope": "/maze-runner/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0f0f23",
@@ -54,7 +54,7 @@
       "name": "Start Game",
       "short_name": "Play",
       "description": "Start a new game of Maze Runner",
-      "url": "./index.html?start=true",
+      "url": "/maze-runner/?start=true",
       "icons": [
         {
           "src": "./icon-192.svg",

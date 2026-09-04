@@ -100,7 +100,7 @@ class I18n {
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
             const translation = this.t(key);
-            if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+            if (element.tagName === 'INPUT') {
                 element.value = translation;
             } else {
                 element.textContent = translation;
@@ -212,11 +212,4 @@ class I18n {
 // Global i18n instance
 const i18n = new I18n();
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        try { i18n.init(); } catch(e) { console.warn('i18n init error:', e); }
-    });
-} else {
-    try { i18n.init(); } catch(e) { console.warn('i18n init error:', e); }
-}
+// Initialization is owned by the app entry point so listeners are registered once.

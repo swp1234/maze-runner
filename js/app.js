@@ -1,3 +1,12 @@
+const mazeTrackedStages = new Set();
+function trackMazeStage(eventName) {
+    if (mazeTrackedStages.has(eventName)) return;
+    mazeTrackedStages.add(eventName);
+    if (typeof gtag === 'function') {
+        gtag('event', eventName, { event_category: 'maze_runner' });
+    }
+}
+
 // Theme toggle functionality
 const themeToggle = document.getElementById('theme-toggle');
 if (themeToggle) {
@@ -20,7 +29,7 @@ function spawnConfetti() {
     const colors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd'];
     for (let i = 0; i < 50; i++) {
         const c = document.createElement('div');
-        c.style.cssText = `position:fixed;top:-10px;left:${Math.random()*100}%;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'0'};z-index:99999;pointer-events:none;animation:confettiFall ${1.5+Math.random()*2}s linear forwards`;
+        c.style.cssText = `position:fixed;top:-10px;left:${Math.random()*96}%;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'0'};z-index:99999;pointer-events:none;animation:confettiFall ${1.5+Math.random()*2}s linear forwards`;
         document.body.appendChild(c);
         setTimeout(() => c.remove(), 4000);
     }
@@ -521,26 +530,31 @@ class Game {
             retryBtn.addEventListener('click', () => this.startGame());
         }
 
-        // ---- Share score ----
+        // ---- Share game ----
         const shareScoreBtn = document.getElementById('share-score-btn');
         if (shareScoreBtn) {
-            shareScoreBtn.addEventListener('click', () => {
-                const stage = this.stage || 0;
-                const score = this.totalScore || 0;
-                const text = `I reached stage ${stage} with ${score} points in Maze Runner! Can you beat me? \uD83C\uDFC3`;
+            shareScoreBtn.addEventListener('click', async () => {
+                const text = 'I played Maze Runner on DopaBrain.';
                 const url = 'https://dopabrain.com/maze-runner/';
-                if (navigator.share) {
-                    navigator.share({ title: 'Maze Runner', text, url }).catch(() => {});
-                } else {
-                    navigator.clipboard.writeText(text + '\n' + url).then(() => {
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ title: 'Maze Runner', text, url });
+                    } else {
+                        await navigator.clipboard.writeText(text + '\n' + url);
                         const orig = shareScoreBtn.textContent;
                         shareScoreBtn.textContent = 'Copied!';
                         setTimeout(() => shareScoreBtn.textContent = orig, 1500);
-                    }).catch(() => {});
+                    }
+                    trackMazeStage('maze_runner_share');
+                } catch (error) {
+                    // Cancellation or denied clipboard access is not a completed share.
                 }
-                if (typeof gtag === 'function') gtag('event', 'share', { method: navigator.share ? 'native' : 'clipboard', app_name: 'maze-runner' });
             });
         }
+
+        document.querySelectorAll('[data-related-slug]').forEach((link) => {
+            link.addEventListener('click', () => trackMazeStage('maze_runner_related_click'));
+        });
 
         // ---- Menu buttons ----
         const menuBtnComplete = document.getElementById('menuBtnComplete');
@@ -566,32 +580,6 @@ class Game {
                 if (this.sfx) {
                     const enabled = this.sfx.toggle();
                     soundToggle.textContent = enabled ? '🔊' : '🔇';
-                }
-            });
-        }
-
-        // ---- Language selector ----
-        const langToggle = document.getElementById('lang-toggle');
-        const langMenu = document.getElementById('lang-menu');
-        if (langToggle && langMenu) {
-            langToggle.addEventListener('click', () => {
-                langMenu.classList.toggle('hidden');
-            });
-            document.querySelectorAll('.lang-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const lang = btn.dataset.lang;
-                    if (typeof i18n !== 'undefined') {
-                        i18n.setLanguage(lang);
-                        i18n.applyTranslations();
-                    }
-                    langMenu.classList.add('hidden');
-                    document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                });
-            });
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    langMenu.classList.add('hidden');
                 }
             });
         }
@@ -782,7 +770,6 @@ class Game {
     // Game Flow
     // ========================================================================
     startGame() {
-        if (typeof GameAds !== 'undefined') GameAds.removeRewardButton('#gameOverScreen');
         this.clearGameState();
         this.stage = 1;
         this.totalScore = 0;
@@ -791,6 +778,7 @@ class Game {
         this.initLevel();
         this.showScreen('game');
         this.startGameLoop();
+        trackMazeStage('maze_runner_start');
     }
 
     resumeGame() {
@@ -2437,11 +2425,7 @@ class Game {
 
         // Show screen
         this.showScreen('levelComplete');
-
-        // Ad logic: show interstitial every 3 levels
-        if (this.stage % 3 === 0) {
-            this.showInterstitialAd();
-        }
+        trackMazeStage('maze_runner_progress');
     }
 
     animateScoreValue(el, from, to, duration) {
@@ -2494,16 +2478,6 @@ class Game {
         }
         this.displayBestRecords();
 
-        // Daily streak report
-        if (typeof DailyStreak !== 'undefined') DailyStreak.report(this.stage);
-
-        // GameAchievements report
-        if (typeof GameAchievements !== 'undefined') GameAchievements.report({
-            bestScore: this.bestScore,
-            totalGames: this.totalGames,
-            bestStage: this.bestStage
-        });
-
         // Play sound + shake
         if (this.sfx && this.sfx.gameOver) {
             try { this.sfx.gameOver(); } catch (e) { /* ignore */ }
@@ -2511,36 +2485,9 @@ class Game {
         this.shakeCanvas();
         if (typeof Haptic !== 'undefined') Haptic.heavy();
 
-        // Show screen
-        if (typeof GameAds !== 'undefined') {
-            GameAds.showInterstitial({ onComplete: () => {
-                this.showScreen('gameOver');
-                this.updateResumeButton();
-                this.injectRewardButton();
-            } });
-        } else {
-            this.showScreen('gameOver');
-            this.updateResumeButton();
-            this.injectRewardButton();
-        }
-    }
-
-    injectRewardButton() {
-        if (typeof GameAds !== 'undefined') {
-            GameAds.injectRewardButton({
-                container: '#gameOverScreen',
-                label: 'Watch Ad for Extra Life',
-                onReward: () => {
-                    // Continue from current stage
-                    GameAds.removeRewardButton('#gameOverScreen');
-                    this.initLevel();
-                    this.showScreen('game');
-                    this.startGameLoop();
-                    if (typeof gtag === 'function')
-                        gtag('event', 'rewarded_ad', { event_category: 'maze_runner', type: 'extra_life', stage: this.stage });
-                }
-            });
-        }
+        this.showScreen('gameOver');
+        this.updateResumeButton();
+        trackMazeStage('maze_runner_complete');
     }
 
     // ========================================================================
@@ -2655,21 +2602,6 @@ class Game {
         }
     }
 
-    // ========================================================================
-    // Interstitial Ad
-    // ========================================================================
-    showInterstitialAd() {
-        if (window.adsbygoogle) {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({
-                    google_ad_client: 'ca-pub-3600813755953882',
-                    enable_page_level_ads: true
-                });
-            } catch (e) {
-                // Silently fail if ads not available
-            }
-        }
-    }
 }
 
 
@@ -2696,22 +2628,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Create and start game
     const game = new Game();
-
-    // Daily streak retention
-    if (typeof DailyStreak !== 'undefined') DailyStreak.init({ gameId: 'maze-runner', bestScoreKey: 'maze_bestStage', minTarget: 2 });
-
-    // GameAchievements integration
-    if (typeof GameAchievements !== 'undefined') GameAchievements.init({
-        gameId: 'maze-runner',
-        defs: [
-            { id: 'score_500', stat: 'bestScore', target: 500, icon: '⭐', name: 'Maze Explorer' },
-            { id: 'score_2000', stat: 'bestScore', target: 2000, icon: '🏆', name: 'Maze Master' },
-            { id: 'score_5000', stat: 'bestScore', target: 5000, icon: '👑', name: 'Maze Legend' },
-            { id: 'games_10', stat: 'totalGames', target: 10, icon: '🎮', name: 'Regular Player' },
-            { id: 'stage_5', stat: 'bestStage', target: 5, icon: '🔥', name: 'Deep Explorer' },
-            { id: 'stage_10', stat: 'bestStage', target: 10, icon: '💎', name: 'Maze Champion' }
-        ]
-    });
-
-    if (typeof GameAds !== 'undefined') GameAds.init();
+    window.mazeRunnerGame = game;
+    trackMazeStage('maze_runner_view');
 });
